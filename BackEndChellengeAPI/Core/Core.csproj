@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Util\Msgs\RequestMsg.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RequestMsg.resx</DependentUpon>
+		<AccessModifier>public</AccessModifier>
+    </Compile>
+    <Compile Update="Util\Msgs\UserMsg.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserMsg.resx</DependentUpon>
+		<AccessModifier>public</AccessModifier>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Util\Msgs\RequestMsg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RequestMsg.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Util\Msgs\UserMsg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserMsg.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

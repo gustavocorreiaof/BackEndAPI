@@ -1,0 +1,6 @@
+@BackEndChellengeAPI_HostAddress = http://localhost:5195
+
+GET {{BackEndChellengeAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
