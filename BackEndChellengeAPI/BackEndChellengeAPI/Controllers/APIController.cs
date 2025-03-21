@@ -1,3 +1,5 @@
+using Core.BusinesseRules;
+using Core.DTOs;
 using Core.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +17,15 @@ namespace BackEndChellengeAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost(Name = "InsertUser")]
+        [HttpPost("insertuser")]
         public IActionResult InsertUser([FromBody] CreateUserRequest request)
         {
 
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+                UserDTO userDTO = new UserDTO(request.Name, request.Password, request.CPF, request.Email);
+
+                UserBR.InsertUser(userDTO);
             }
             catch (Exception ex)
             {

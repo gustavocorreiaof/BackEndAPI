@@ -18,7 +18,8 @@ namespace Core.Util.Attributes
             var password = value.ToString();
 
             // Expressão regular para validar a senha
-            var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$";
+            var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!/%*?&])[A-Za-z\d@$!%*?&]{6,}$";
+
 
             // Verifica se a senha corresponde ao padrão
             return Regex.IsMatch(password, passwordRegex);

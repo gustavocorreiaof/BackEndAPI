@@ -6,7 +6,7 @@
         {
             Name = name;
             Password = password;
-            cpf = cpf;
+            CPF = cpf;
             Email = email;
         }
 
