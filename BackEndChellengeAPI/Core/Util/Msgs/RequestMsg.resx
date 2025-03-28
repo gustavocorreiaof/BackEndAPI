@@ -124,9 +124,9 @@
     <value>The Email is required.</value>
   </data>
   <data name="ERR003" xml:space="preserve">
-    <value>The Password is required.</value>
+    <value />
   </data>
   <data name="ERR004" xml:space="preserve">
-    <value>The CPF is required.</value>
+    <value />
   </data>
 </root>

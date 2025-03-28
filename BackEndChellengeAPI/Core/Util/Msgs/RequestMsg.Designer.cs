@@ -79,7 +79,7 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a The Password is required..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a .
         /// </summary>
         internal static string ERR003 {
             get {
@@ -88,7 +88,7 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a The CPF is required..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a .
         /// </summary>
         internal static string ERR004 {
             get {

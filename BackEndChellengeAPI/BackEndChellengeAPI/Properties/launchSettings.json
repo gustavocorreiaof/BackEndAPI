@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "http": {
+    "Start": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",

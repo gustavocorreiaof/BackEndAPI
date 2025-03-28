@@ -120,4 +120,10 @@
   <data name="EX001" xml:space="preserve">
     <value>The submitted CPF is not valid.</value>
   </data>
+  <data name="EX002" xml:space="preserve">
+    <value>There is already a user with this CPF.</value>
+  </data>
+  <data name="EX003" xml:space="preserve">
+    <value>There is already a user with this Email.</value>
+  </data>
 </root>

@@ -23,7 +23,7 @@ namespace BackEndChellengeAPI.Controllers
 
             try
             {
-                UserDTO userDTO = new UserDTO(request.Name, request.Password, request.CPF, request.Email);
+                UserDTO userDTO = new UserDTO(request.Name, request.Password, request.TaxNumber, request.Email);
 
                 UserBR.InsertUser(userDTO);
             }

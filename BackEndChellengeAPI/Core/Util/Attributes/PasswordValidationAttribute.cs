@@ -5,10 +5,7 @@ namespace Core.Util.Attributes
 {
     public class PasswordValidationAttribute : ValidationAttribute
     {
-        // Mensagem padrão para o erro
-        public PasswordValidationAttribute() : base("A senha deve conter pelo menos 6 caracteres, incluindo letras maiúsculas e minúsculas, números e um caractere especial.")
-        {
-        }
+        public PasswordValidationAttribute() : base("A senha deve conter pelo menos 6 caracteres, incluindo letras maiúsculas e minúsculas, números e um caractere especial."){}
 
         public override bool IsValid(object value)
         {

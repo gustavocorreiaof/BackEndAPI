@@ -6,18 +6,19 @@ namespace Core.Services
     {
         private readonly UserRepository _userRepository = new();
 
-        public UserService()
+        public User GetUserByTaxNumber(string userTaxNumber)
         {
+            return _userRepository.GetUserByTaxNumber(userTaxNumber);
         }
 
-        public UserService(UserRepository userRepository)
+        public object GetUserByEmail(string email)
         {
-            _userRepository = userRepository;
+            return _userRepository.GetUserByEmail(email);
         }
 
-        public User GetUserByCPF(string userCPF)
+        public void InsertUser(User user)
         {
-            return _userRepository.GetUserByCPF(userCPF);
+            _userRepository.InsertUser(user);
         }
     }
 }

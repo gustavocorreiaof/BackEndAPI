@@ -1,12 +1,14 @@
-﻿namespace Core.Entities
+﻿using Core.Entities.Base;
+
+namespace Core.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
         public string Name { get; set; }
 
         public string Password { get; set; }
 
-        public string CPF { get; set; }
+        public string TaxNumber { get; set; }
 
         public string Email { get; set; }
 
@@ -14,8 +16,10 @@
         {
             this.Name = name;
             this.Password = pwd;
-            this.CPF = cpf;
+            this.TaxNumber = cpf;
             this.Email = email;
         }
+
+        public User(){}
     }
 }

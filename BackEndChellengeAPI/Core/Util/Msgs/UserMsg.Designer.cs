@@ -68,5 +68,23 @@ namespace Core.Util.Msgs {
                 return ResourceManager.GetString("EX001", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a There is already a user with this CPF..
+        /// </summary>
+        internal static string EX002 {
+            get {
+                return ResourceManager.GetString("EX002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a There is already a user with this Email..
+        /// </summary>
+        internal static string EX003 {
+            get {
+                return ResourceManager.GetString("EX003", resourceCulture);
+            }
+        }
     }
 }
