@@ -15,7 +15,7 @@ namespace Core.Requests
         [PasswordValidation]
         public string Password { get; set; }
 
-        [CpfCnpjValidationAttribute]
+        [CpfCnpjValidation]
         public string TaxNumber { get; set; }
     }
 }

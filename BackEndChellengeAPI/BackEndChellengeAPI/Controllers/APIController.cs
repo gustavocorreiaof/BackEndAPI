@@ -1,5 +1,6 @@
 using Core.BusinesseRules;
 using Core.DTOs;
+using Core.Exceptions;
 using Core.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,19 +21,22 @@ namespace BackEndChellengeAPI.Controllers
         [HttpPost("insertuser")]
         public IActionResult InsertUser([FromBody] CreateUserRequest request)
         {
-
             try
             {
-                UserDTO userDTO = new UserDTO(request.Name, request.Password, request.TaxNumber, request.Email);
+                UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email);
 
                 UserBR.InsertUser(userDTO);
+
+                return Ok("Usuário criado com sucesso.");
+            }
+            catch (ApiException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-
+                return BadRequest("Erro ao criar o usuário");
             }
-
-            return Ok("Usuário criado com sucesso.");
         }
     }
 }
