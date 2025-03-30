@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
+using System.Text.Json;
 
 namespace Core.Middlewere
 {
@@ -26,8 +27,23 @@ namespace Core.Middlewere
                 // Log de erro no MongoDB
                 await LogExceptionToMongoDBAsync(ex);
 
-                // Re-throw exception se necessário
-                throw;
+                int statusCode = 400;
+
+                var errorResponse = new
+                {
+                    StatusCode = statusCode,
+                    Message = ex.Message
+                };
+
+                context.Response.StatusCode = statusCode;
+                context.Response.ContentType = "application/json";
+
+                string result = JsonSerializer.Serialize(errorResponse);
+
+                await context.Response.WriteAsync(result);
+
+                if (!context.Response.HasStarted)
+                    throw;
             }
         }
 

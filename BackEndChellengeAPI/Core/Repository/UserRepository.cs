@@ -76,6 +76,7 @@ public class UserRepository : BaseRepository
                 command.Parameters.AddWithValue("@paramTaxNumber", user.TaxNumber);
                 command.Parameters.AddWithValue("@paramEmail", user.Email);
                 command.Parameters.AddWithValue("@paramCreationDate", DateTime.Now);
+                command.Parameters.AddWithValue("@paramUserType", user.UserType);
 
                 // Executa o comando
                 var result = command.ExecuteScalar();  // Retorna o Id gerado

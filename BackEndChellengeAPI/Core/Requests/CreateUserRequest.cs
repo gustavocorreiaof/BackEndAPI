@@ -1,4 +1,5 @@
-﻿using Core.Util.Attributes;
+﻿using Core.Entities;
+using Core.Util.Attributes;
 using Core.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,5 +18,7 @@ namespace Core.Requests
 
         [CpfCnpjValidation]
         public string TaxNumber { get; set; }
+
+        public UserType UserType { get; set; }
     }
 }

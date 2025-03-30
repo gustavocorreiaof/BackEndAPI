@@ -1,8 +1,15 @@
+using Core.Middlewere;
 using Core.Repository.Settings;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<IMongoDatabase>(serviceProvider =>
+{
+    var client = new MongoClient("mongodb://localhost:27017/");  // Substitua pela sua connection string
+    return client.GetDatabase("BackEndAPI");  // Substitua pelo nome do seu banco de dados
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

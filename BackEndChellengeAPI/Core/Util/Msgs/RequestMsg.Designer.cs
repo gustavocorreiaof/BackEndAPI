@@ -22,7 +22,7 @@ namespace Core.Util.Msgs {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class RequestMsg {
+    public class RequestMsg {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Core.Util.Msgs {
         ///   Retorna a instância de ResourceManager armazenada em cache usada por essa classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Core.Util.Msgs.RequestMsg", typeof(RequestMsg).Assembly);
@@ -51,7 +51,7 @@ namespace Core.Util.Msgs {
         ///   pesquisas de recursos que usam essa classe de recurso de tipo de alta segurança.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Core.Util.Msgs {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a The Name is required..
         /// </summary>
-        internal static string ERR001 {
+        public static string ERR001 {
             get {
                 return ResourceManager.GetString("ERR001", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Core.Util.Msgs {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a The Email is required..
         /// </summary>
-        internal static string ERR002 {
+        public static string ERR002 {
             get {
                 return ResourceManager.GetString("ERR002", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Core.Util.Msgs {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a .
         /// </summary>
-        internal static string ERR003 {
+        public static string ERR003 {
             get {
                 return ResourceManager.GetString("ERR003", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Core.Util.Msgs {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a .
         /// </summary>
-        internal static string ERR004 {
+        public static string ERR004 {
             get {
                 return ResourceManager.GetString("ERR004", resourceCulture);
             }

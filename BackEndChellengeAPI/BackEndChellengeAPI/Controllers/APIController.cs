@@ -1,7 +1,8 @@
 using Core.BusinesseRules;
 using Core.DTOs;
-using Core.Exceptions;
+using Core.Entities;
 using Core.Requests;
+using Core.Util.Msgs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEndChellengeAPI.Controllers
@@ -10,33 +11,25 @@ namespace BackEndChellengeAPI.Controllers
     [Route("[controller]")]
     public class APIController : ControllerBase
     {
-
-        private readonly ILogger<APIController> _logger;
-
-        public APIController(ILogger<APIController> logger)
-        {
-            _logger = logger;
-        }
-
-        [HttpPost("insertuser")]
+        [HttpPost("InsertUser")]
         public IActionResult InsertUser([FromBody] CreateUserRequest request)
         {
-            try
-            {
-                UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email);
+            UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email);
 
-                UserBR.InsertUser(userDTO);
+            UserBR.InsertUser(userDTO);
 
-                return Ok("Usuário criado com sucesso.");
-            }
-            catch (ApiException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Erro ao criar o usuário");
-            }
+            return Ok(ApiMsg.INF001);
         }
+
+        /*[HttpPost("SendTransaction")]
+        public IActionResult SendTransaction([FromBody] CreateUserRequest request)
+        {
+            UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email);
+
+            UserBR.InsertUser(userDTO);
+
+            ret
+            n Ok(ApiMsg.INF001);
+        }*/
     }
 }

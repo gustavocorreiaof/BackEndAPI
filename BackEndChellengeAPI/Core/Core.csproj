@@ -23,22 +23,22 @@
       <DependentUpon>RequestMsg.resx</DependentUpon>
 		<AccessModifier>public</AccessModifier>
     </Compile>
-    <Compile Update="Util\Msgs\UserMsg.Designer.cs">
+    <Compile Update="Util\Msgs\ApiMsg.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>UserMsg.resx</DependentUpon>
+      <DependentUpon>ApiMsg.resx</DependentUpon>
 		<AccessModifier>public</AccessModifier>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Util\Msgs\RequestMsg.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RequestMsg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Util\Msgs\UserMsg.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>UserMsg.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Util\Msgs\ApiMsg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ApiMsg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

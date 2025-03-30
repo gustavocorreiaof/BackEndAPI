@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EX001" xml:space="preserve">
-    <value>The submitted CPF is not valid.</value>
-  </data>
   <data name="EX002" xml:space="preserve">
-    <value>There is already a user with this CPF.</value>
+    <value>There is already a user with this TaxNumber.</value>
   </data>
   <data name="EX003" xml:space="preserve">
     <value>There is already a user with this Email.</value>
+  </data>
+  <data name="INF001" xml:space="preserve">
+    <value>User successfully created.</value>
   </data>
 </root>

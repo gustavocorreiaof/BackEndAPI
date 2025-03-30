@@ -2,21 +2,37 @@
 
 public class CpfCnpjValidationAttribute : ValidationAttribute
 {
+    private string _relatedProperty = "UserType";
     public CpfCnpjValidationAttribute() : base("The provided CPF or CNPJ is invalid.") { }
 
-    public override bool IsValid(object value)
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        if (value == null)
-            return false;
+        if (value == null) return new ValidationResult(ErrorMessage);
+
+        // Obtendo o valor do outro campo da entidade
+        var relatedPropertyInfo = validationContext.ObjectType.GetProperty(_relatedProperty);
 
         var document = new string(value.ToString().Where(char.IsDigit).ToArray());
 
-        return document.Length switch
+        bool isValid = document.Length switch
         {
             11 => ValidateCPF(document),
             14 => ValidateCNPJ(document),
             _ => false
         };
+
+        if (!isValid)
+        {
+            return new ValidationResult(ErrorMessage);
+        }
+
+        // 🚨 Aqui alteramos a outra propriedade com base na validação
+        if (document.Length == 11)
+            relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 0); // F = Pessoa Física
+        else if (document.Length == 14)
+            relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 1); // J = Pessoa Jurídica
+
+        return ValidationResult.Success;
     }
 
     private bool ValidateCPF(string cpf)

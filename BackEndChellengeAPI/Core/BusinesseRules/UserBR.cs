@@ -11,28 +11,21 @@ namespace Core.BusinesseRules
     {
         public static void InsertUser(UserDTO userDTO)
         {
-            try
+            User? user = new UserService().GetUserByTaxNumber(userDTO.TaxNumber) switch
             {
-                User? user = new UserService().GetUserByTaxNumber(userDTO.TaxNumber) switch
-                {
-                    not null => throw new ApiException(UserMsg.EX002),
-                    _ => null
-                };
+                not null => throw new ApiException(ApiMsg.EX002),
+                _ => null
+            };
 
-                user = new UserService().GetUserByEmail(userDTO.TaxNumber) switch
-                {
-                    not null => throw new ApiException(UserMsg.EX003),
-                    _ => new User()
-                };
-
-                user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
-
-                new UserService().InsertUser(user);
-            }
-            catch
+            user = new UserService().GetUserByEmail(userDTO.TaxNumber) switch
             {
-                throw;
-            }
+                not null => throw new ApiException(ApiMsg.EX003),
+                _ => new User()
+            };
+
+            user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
+
+            new UserService().InsertUser(user);
         }
     }
 }

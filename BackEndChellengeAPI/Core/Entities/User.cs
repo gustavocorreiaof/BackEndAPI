@@ -12,12 +12,15 @@ namespace Core.Entities
 
         public string Email { get; set; }
 
-        public User(string name, string pwd, string cpf, string email)
+        public UserType UserType { get; set; }
+
+        public User(string name, string pwd, string cpf, string email, UserType userType)
         {
             this.Name = name;
             this.Password = pwd;
             this.TaxNumber = cpf;
             this.Email = email;
+            this.UserType = userType;
         }
 
         public User(){}
