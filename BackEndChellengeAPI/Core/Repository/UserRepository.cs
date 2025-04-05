@@ -23,7 +23,8 @@ public class UserRepository : BaseRepository
                             reader["Name"].ToString(),
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),
-                            reader["Email"].ToString()
+                            reader["Email"].ToString(),
+                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString())
                         );
                     }
                     return null;
@@ -32,7 +33,7 @@ public class UserRepository : BaseRepository
         }
     }
 
-    public object GetUserByEmail(string email)
+    public User GetUserByEmail(string email)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -51,7 +52,8 @@ public class UserRepository : BaseRepository
                             reader["Name"].ToString(),
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),
-                            reader["Email"].ToString()
+                            reader["Email"].ToString(),
+                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString())
                         );
                     }
                     return null;
@@ -76,7 +78,7 @@ public class UserRepository : BaseRepository
                 command.Parameters.AddWithValue("@paramTaxNumber", user.TaxNumber);
                 command.Parameters.AddWithValue("@paramEmail", user.Email);
                 command.Parameters.AddWithValue("@paramCreationDate", DateTime.Now);
-                command.Parameters.AddWithValue("@paramUserType", user.UserType);
+                command.Parameters.AddWithValue("@paramType", user.Type);
 
                 // Executa o comando
                 var result = command.ExecuteScalar();  // Retorna o Id gerado

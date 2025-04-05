@@ -12,7 +12,7 @@ namespace Core.Entities
 
         public string Email { get; set; }
 
-        public UserType UserType { get; set; }
+        public UserType Type { get; set; }
 
         public User(string name, string pwd, string cpf, string email, UserType userType)
         {
@@ -20,7 +20,7 @@ namespace Core.Entities
             this.Password = pwd;
             this.TaxNumber = cpf;
             this.Email = email;
-            this.UserType = userType;
+            this.Type = userType;
         }
 
         public User(){}

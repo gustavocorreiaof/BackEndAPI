@@ -14,7 +14,7 @@ namespace BackEndChellengeAPI.Controllers
         [HttpPost("InsertUser")]
         public IActionResult InsertUser([FromBody] CreateUserRequest request)
         {
-            UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email);
+            UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email, request.UserType);
 
             UserBR.InsertUser(userDTO);
 
