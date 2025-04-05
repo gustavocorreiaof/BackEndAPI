@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Core.Requests;
+using System.ComponentModel.DataAnnotations;
 
 public class CpfCnpjValidationAttribute : ValidationAttribute
 {
@@ -26,11 +27,14 @@ public class CpfCnpjValidationAttribute : ValidationAttribute
             return new ValidationResult(ErrorMessage);
         }
 
-        // 🚨 Aqui alteramos a outra propriedade com base na validação
-        if (document.Length == 11)
-            relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 0); // F = Pessoa Física
-        else if (document.Length == 14)
-            relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 1); // J = Pessoa Jurídica
+        if (validationContext.ObjectInstance is CreateUserRequest)
+        {
+            // 🚨 Aqui alteramos a outra propriedade com base na validação
+            if (document.Length == 11)
+                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 0); // F = Pessoa Física
+            else if (document.Length == 14)
+                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 1); // J = Pessoa Jurídica
+        }
 
         return ValidationResult.Success;
     }

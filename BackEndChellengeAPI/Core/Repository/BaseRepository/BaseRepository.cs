@@ -4,7 +4,7 @@ namespace Core.Repository.Settings
 {
     public class BaseRepository
     {
-        internal string _connectionString;
+        public string _connectionString;
 
         public BaseRepository()
         {

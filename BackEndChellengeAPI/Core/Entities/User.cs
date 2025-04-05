@@ -14,8 +14,9 @@ namespace Core.Entities
 
         public UserType Type { get; set; }
 
-        public User(string name, string pwd, string cpf, string email, UserType userType)
+        public User(long id, string name, string pwd, string cpf, string email, UserType userType)
         {
+            this.Id = id;
             this.Name = name;
             this.Password = pwd;
             this.TaxNumber = cpf;

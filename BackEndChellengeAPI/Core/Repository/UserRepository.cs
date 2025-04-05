@@ -20,6 +20,7 @@ public class UserRepository : BaseRepository
                     if (reader.Read())
                     {
                         return new User(
+                            reader.GetInt32(reader.GetOrdinal("Id")),
                             reader["Name"].ToString(),
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),
@@ -49,6 +50,7 @@ public class UserRepository : BaseRepository
                     if (reader.Read())
                     {
                         return new User(
+                            reader.GetInt32(reader.GetOrdinal("Id")),
                             reader["Name"].ToString(),
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),

@@ -124,9 +124,12 @@
     <value>The Email is required.</value>
   </data>
   <data name="ERR003" xml:space="preserve">
-    <value />
+    <value>​It is necessary to provide the TaxNumber of the person who will make the transfer.</value>
   </data>
   <data name="ERR004" xml:space="preserve">
-    <value />
+    <value>​It is necessary to provide the TaxNumber of the person who will receive the transfer.</value>
+  </data>
+  <data name="ERR005" xml:space="preserve">
+    <value>​A transfer must necessarily have an amount.</value>
   </data>
 </root>

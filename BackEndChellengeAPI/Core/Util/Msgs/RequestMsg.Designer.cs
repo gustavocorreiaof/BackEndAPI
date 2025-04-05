@@ -79,7 +79,7 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a .
+        ///   Consulta uma cadeia de caracteres localizada semelhante a ​It is necessary to provide the TaxNumber of the person who will make the transfer..
         /// </summary>
         public static string ERR003 {
             get {
@@ -88,11 +88,20 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a .
+        ///   Consulta uma cadeia de caracteres localizada semelhante a ​It is necessary to provide the TaxNumber of the person who will receive the transfer..
         /// </summary>
         public static string ERR004 {
             get {
                 return ResourceManager.GetString("ERR004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a ​A transfer must necessarily have an amount..
+        /// </summary>
+        public static string ERR005 {
+            get {
+                return ResourceManager.GetString("ERR005", resourceCulture);
             }
         }
     }

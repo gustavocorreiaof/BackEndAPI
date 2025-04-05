@@ -1,6 +1,6 @@
 using Core.BusinesseRules;
 using Core.DTOs;
-using Core.Entities;
+using Core.Exceptions;
 using Core.Requests;
 using Core.Util.Msgs;
 using Microsoft.AspNetCore.Mvc;
@@ -21,15 +21,21 @@ namespace BackEndChellengeAPI.Controllers
             return Ok(ApiMsg.INF001);
         }
 
-        /*[HttpPost("SendTransaction")]
-        public IActionResult SendTransaction([FromBody] CreateUserRequest request)
+        [HttpPost("SendTransaction")]
+        public async Task<IActionResult> SendTransaction([FromBody] SendTransactionRequest request)
         {
-            UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email);
+            try
+            {
+                TransferDTO transferDTO = new(request.PayerTaxNumber, request.PayeeTaxNumber, request.TransferValue);
 
-            UserBR.InsertUser(userDTO);
+                await TransferBR.PerformTransactionAsync(transferDTO);
 
-            ret
-            n Ok(ApiMsg.INF001);
-        }*/
+                return Ok("Transferência efetuada com sucesso");
+            }
+            catch (ApiException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
