@@ -106,7 +106,7 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a The provided CPF or CNPJ is invalid..
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The provided TaxNumber is invalid..
         /// </summary>
         public static string ERR006 {
             get {

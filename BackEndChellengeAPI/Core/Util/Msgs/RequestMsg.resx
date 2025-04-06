@@ -133,6 +133,6 @@
     <value>​A transfer must necessarily have an amount.</value>
   </data>
   <data name="ERR006" xml:space="preserve">
-    <value>The provided CPF or CNPJ is invalid.</value>
+    <value>The provided TaxNumber is invalid.</value>
   </data>
 </root>

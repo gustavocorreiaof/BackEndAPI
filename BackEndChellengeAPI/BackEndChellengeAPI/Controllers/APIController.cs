@@ -31,9 +31,6 @@ namespace BackEndChellengeAPI.Controllers
         [HttpPost("InsertUser")]
         public IActionResult InsertUser([FromBody] CreateUserRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email, request.UserType, userId: null);
 
             new UserBR().CreateOrUpdateUser(userDTO);
