@@ -71,4 +71,24 @@ public class APIControllerIntegrationTests
         Assert.IsTrue(body.Errors.ContainsKey("TaxNumber"));
         Assert.That(body.Errors["TaxNumber"], Does.Contain("The TaxNumber field is required."));
     }
+
+    [Test]
+    public async Task InsertUser_WhenNameIsNull_ReturnsBadRequest()
+    {
+        var request = new CreateUserRequest()
+        {
+            Name = null,
+            Email = "exemple1@gmail.com",
+            Password = "Password123!",
+            TaxNumber = "78476815000139"
+        };
+
+        var response = await _client.PostAsJsonAsync(InsertUserURL, request);
+
+        var body = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+
+        Assert.NotNull(body);
+        Assert.IsTrue(body.Errors.ContainsKey("Name"));
+        Assert.That(body.Errors["Name"], Does.Contain("The Name is required."));
+    }
 }
