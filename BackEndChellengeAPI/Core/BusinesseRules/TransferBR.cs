@@ -24,8 +24,10 @@ namespace Core.BusinesseRules
 
                 bool isAuthorized = await IsTransferAuthorizedAsync();
 
-                if (!isAuthorized)
-                    new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
+                if (!isAuthorized) 
+                    throw new ApiException("Transaction not authorized.");
+
+                new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);                   
             }
             catch
             {
@@ -56,11 +58,10 @@ namespace Core.BusinesseRules
 
                 var authorizationResponse = JsonSerializer.Deserialize<AuthorizationResponse>(responseBody);
 
-                return authorizationResponse?.Status == "Authorized";
+                return (bool)(authorizationResponse?.Data.authorization);
             }
             catch (HttpRequestException ex)
             {
-
                 Console.WriteLine($"Erro ao chamar o serviço autorizador: {ex.Message}");
                 return false;
             }
