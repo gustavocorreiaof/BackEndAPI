@@ -11,7 +11,7 @@ namespace Core.Services
             return _userRepository.GetUserByTaxNumber(userTaxNumber);
         }
 
-        public object GetUserByEmail(string email)
+        public User GetUserByEmail(string email)
         {
             return _userRepository.GetUserByEmail(email);
         }
@@ -19,6 +19,16 @@ namespace Core.Services
         public void InsertUser(User user)
         {
             _userRepository.InsertUser(user);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _userRepository.GetAllUsers();
+        }
+
+        public void UpdateUser(User user)
+        {
+            _userRepository.UpdateUser(user);
         }
     }
 }

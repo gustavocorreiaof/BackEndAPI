@@ -14,5 +14,7 @@
         public string PayeeTaxNumber { get; set; }
 
         public decimal TransferValue { get; set; }
+
+        public string PayeeEmail { get; set; }
     }
 }

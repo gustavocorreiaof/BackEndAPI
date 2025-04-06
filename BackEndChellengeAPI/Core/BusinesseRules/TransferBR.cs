@@ -27,7 +27,9 @@ namespace Core.BusinesseRules
                 if (!isAuthorized) 
                     throw new ApiException("Transaction not authorized.");
 
-                new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);                   
+                new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
+
+                dto.PayeeEmail = payeeUser.Email;
             }
             catch
             {

@@ -9,23 +9,35 @@ namespace Core.BusinesseRules
 {
     public static class UserBR
     {
-        public static void InsertUser(UserDTO userDTO)
+        public static void CreateOrUpdateUser(UserDTO userDTO)
         {
-            User? user = new UserService().GetUserByTaxNumber(userDTO.TaxNumber) switch
-            {
-                not null => throw new ApiException(ApiMsg.EX002),
-                _ => null
-            };
+            VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
 
-            user = new UserService().GetUserByEmail(userDTO.TaxNumber) switch
-            {
-                not null => throw new ApiException(ApiMsg.EX003),
-                _ => new User()
-            };
+            User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
+            
+            if(userDTO.UserId == null)
+                new UserService().InsertUser(user);
+            else
+                new UserService().UpdateUser(user);
 
-            user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
+        }
 
-            new UserService().InsertUser(user);
+        public static List<User> GetAllUsers()
+        {
+            return new UserService().GetAllUsers();
+        }
+
+        private static void VerifyIfExistUser(string taxNumber, string email, long? userId)
+        {
+            var service = new UserService();
+
+            var userByTax = service.GetUserByTaxNumber(taxNumber);
+            if (userByTax != null && userByTax.Id != userId)
+                throw new ApiException(ApiMsg.EX002);
+
+            var userByEmail = service.GetUserByEmail(email);
+            if (userByEmail != null && userByEmail.Id != userId)
+                throw new ApiException(ApiMsg.EX003);
         }
     }
 }
