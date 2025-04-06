@@ -1,16 +1,16 @@
 ﻿using Core.Requests;
+using Core.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
 
 public class CpfCnpjValidationAttribute : ValidationAttribute
 {
     private string _relatedProperty = "UserType";
-    public CpfCnpjValidationAttribute() : base("The provided CPF or CNPJ is invalid.") { }
+    public CpfCnpjValidationAttribute() : base(RequestMsg.ERR006) { }
 
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
         if (value == null) return new ValidationResult(ErrorMessage);
 
-        // Obtendo o valor do outro campo da entidade
         var relatedPropertyInfo = validationContext.ObjectType.GetProperty(_relatedProperty);
 
         var document = new string(value.ToString().Where(char.IsDigit).ToArray());
@@ -29,11 +29,10 @@ public class CpfCnpjValidationAttribute : ValidationAttribute
 
         if (validationContext.ObjectInstance is CreateUserRequest)
         {
-            // 🚨 Aqui alteramos a outra propriedade com base na validação
             if (document.Length == 11)
-                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 0); // F = Pessoa Física
+                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 0); 
             else if (document.Length == 14)
-                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 1); // J = Pessoa Jurídica
+                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 1); 
         }
 
         return ValidationResult.Success;

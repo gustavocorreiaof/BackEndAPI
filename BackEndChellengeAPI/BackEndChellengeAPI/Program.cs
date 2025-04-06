@@ -1,3 +1,5 @@
+using Core.BusinesseRules;
+using Core.Interfaces;
 using Core.Middlewere;
 using Core.Repository.Settings;
 using MongoDB.Driver;
@@ -16,7 +18,8 @@ builder.Services.AddControllers();
 builder.Services.Configure<BaseRepository>(builder.Configuration.GetSection("DatabaseSettings"));
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(); 
+builder.Services.AddScoped<IUserBR, UserBR>();
 
 var app = builder.Build();
 
@@ -35,3 +38,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

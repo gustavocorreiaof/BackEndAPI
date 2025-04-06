@@ -1,15 +1,16 @@
 ﻿using Core.DTOs;
 using Core.Entities;
 using Core.Exceptions;
+using Core.Interfaces;
 using Core.Mappers;
 using Core.Services;
 using Core.Util.Msgs;
 
 namespace Core.BusinesseRules
 {
-    public static class UserBR
+    public class UserBR : IUserBR
     {
-        public static void CreateOrUpdateUser(UserDTO userDTO)
+        public void CreateOrUpdateUser(UserDTO userDTO)
         {
             VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
 

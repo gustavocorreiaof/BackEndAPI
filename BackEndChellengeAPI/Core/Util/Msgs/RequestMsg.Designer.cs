@@ -104,5 +104,14 @@ namespace Core.Util.Msgs {
                 return ResourceManager.GetString("ERR005", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The provided CPF or CNPJ is invalid..
+        /// </summary>
+        public static string ERR006 {
+            get {
+                return ResourceManager.GetString("ERR006", resourceCulture);
+            }
+        }
     }
 }
