@@ -3,6 +3,7 @@ using Core.Requests;
 using Core.Util.Msgs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Linq;
 using System.Net.Http.Json;
 
 
@@ -90,5 +91,25 @@ public class APIControllerIntegrationTests
         Assert.NotNull(body);
         Assert.IsTrue(body.Errors.ContainsKey("Name"));
         Assert.That(body.Errors["Name"], Does.Contain("The Name is required."));
+    }
+
+    [Test]
+    public async Task InsertUser_WhenEmailIsNull_ReturnBadRequest()
+    {
+        var request = new CreateUserRequest()
+        {
+            Name = "Teste",
+            Email = null,
+            Password = "Password123!",
+            TaxNumber = "78476815000139"
+        };
+
+        var response = await _client.PostAsJsonAsync(InsertUserURL, request);
+
+        var body = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+
+        Assert.NotNull(body);
+        Assert.IsTrue(body.Errors.ContainsKey("Email"));
+        Assert.That(body.Errors["Email"].Contains("The Email is required."));
     }
 }
