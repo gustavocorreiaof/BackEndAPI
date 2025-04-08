@@ -98,7 +98,7 @@ public class APIControllerIntegrationTests
     {
         var request = new CreateUserRequest()
         {
-            Name = "Teste",
+            Name = "Test",
             Email = null,
             Password = "Password123!",
             TaxNumber = "78476815000139"
@@ -111,5 +111,25 @@ public class APIControllerIntegrationTests
         Assert.NotNull(body);
         Assert.IsTrue(body.Errors.ContainsKey("Email"));
         Assert.That(body.Errors["Email"].Contains("The Email is required."));
+    }
+
+    [Test]
+    public async Task InsertUser_WhenPasswordIsInvalid_ReturnsBadRequest()
+    {
+        var request = new CreateUserRequest()
+        {
+            Name = "Test",
+            Email = "exemple1@gmail.com",
+            Password = "weakpassword",
+            TaxNumber = "78476815000139"
+        };
+
+        var response = await _client.PostAsJsonAsync(InsertUserURL, request);
+
+        var body = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+
+        Assert.NotNull(body);
+        Assert.IsTrue(body.Errors.ContainsKey("Password"));
+        Assert.That(body.Errors["Password"].Contains("The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character."));
     }
 }
