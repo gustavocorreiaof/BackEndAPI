@@ -1,5 +1,6 @@
 using Core.Entities;
 using Core.Requests;
+using Core.Responses;
 using Core.Util.Msgs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -149,10 +150,10 @@ public class APIControllerIntegrationTests
 
         var response = await _client.PostAsJsonAsync(InsertUserURL, request);
 
-        var body = await response.Content.ReadFromJsonAsync<ValidationProblemDetails> ();
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse> ();
 
         Assert.NotNull(body);
-        Assert.That(body.Detail, Does.Contain("EX002")); // or exact match if you prefer
+        Assert.That(body.Message.Equals(ApiMsg.EX002));
     }
     #endregion
 }
