@@ -30,6 +30,8 @@ public class APIControllerIntegrationTests
         _factory.Dispose();
     }
 
+    #region InsertUser Tests
+    #region Validate Request Tests
     [Test]
     public async Task InsertUser_InvalidTaxNumber_ReturnsBadRequest()
     {
@@ -94,7 +96,7 @@ public class APIControllerIntegrationTests
     }
 
     [Test]
-    public async Task InsertUser_WhenEmailIsNull_ReturnBadRequest()
+    public async Task InsertUser_WhenEmailIsNull_ReturnsBadRequest()
     {
         var request = new CreateUserRequest()
         {
@@ -132,4 +134,25 @@ public class APIControllerIntegrationTests
         Assert.IsTrue(body.Errors.ContainsKey("Password"));
         Assert.That(body.Errors["Password"].Contains("The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character."));
     }
+    #endregion
+    
+    [Test]
+    public async Task InsertUser_WhenTryInserUserWithUsedTaxNumber_ReturnsBadRequest()
+    {
+        var request = new CreateUserRequest()
+        {
+            Name = "Test",
+            Email = "exemple1@gmail.com",
+            Password = "Password123!",
+            TaxNumber = "10041424000158"
+        };
+
+        var response = await _client.PostAsJsonAsync(InsertUserURL, request);
+
+        var body = await response.Content.ReadFromJsonAsync<ValidationProblemDetails> ();
+
+        Assert.NotNull(body);
+        Assert.That(body.Detail, Does.Contain("EX002")); // or exact match if you prefer
+    }
+    #endregion
 }
