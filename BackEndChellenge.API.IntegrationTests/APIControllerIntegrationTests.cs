@@ -32,6 +32,7 @@ public class APIControllerIntegrationTests
     }
 
     #region InsertUser Tests
+
     #region Validate Request Tests
     [Test]
     public async Task InsertUser_InvalidTaxNumber_ReturnsBadRequest()
@@ -150,10 +151,29 @@ public class APIControllerIntegrationTests
 
         var response = await _client.PostAsJsonAsync(InsertUserURL, request);
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse> ();
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
 
         Assert.NotNull(body);
         Assert.That(body.Message.Equals(ApiMsg.EX002));
+    }
+
+    [Test]
+    public async Task InsertUser_WhenTryInserUserWithUsedEmail_ReturnsBadRequest()
+    {
+        var request = new CreateUserRequest()
+        {
+            Name = "Test",
+            Email = "miras@example.com",
+            Password = "Password123!",
+            TaxNumber = "62822624000141"
+        };
+
+        var response = await _client.PostAsJsonAsync(InsertUserURL, request);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+
+        Assert.NotNull(body);
+        Assert.That(body.Message.Equals(ApiMsg.EX003));
     }
     #endregion
 }
