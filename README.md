@@ -10,6 +10,7 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - MongoDB
 - RESTful API
 - MongoDB
+- RabbitMQ
   
 ## ⚙️ Features
 
@@ -19,6 +20,7 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - 🛠️ Integration tests using NUnit
 - [] JWT implementation for authentication
 - [] Swagger for API documentation
+- [] Publish Message on RabbigMQ
 
 ## 🚧 Project Status
 
