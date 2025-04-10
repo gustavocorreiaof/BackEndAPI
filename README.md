@@ -9,7 +9,6 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - SQL Server
 - MongoDB
 - RESTful API
-- MongoDB
 - RabbitMQ
   
 ## ⚙️ Features
