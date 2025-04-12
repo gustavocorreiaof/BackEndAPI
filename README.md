@@ -20,6 +20,8 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - [] Publish Message on RabbitMQ
 - [] Create a microservice for sending emails and validate if the email was successfully sent.
 - [] JWT implementation for authentication
+- [] Use UnityOfWork
+- [] Use Elastic
 - [] Swagger for API documentation
 
 ## 🚧 Project Status
