@@ -10,13 +10,12 @@ namespace Core.Mappers
 
         public ApiMapper()
         {
-            // Configuração do AutoMapper para mapear entre User e UserDTO
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDTO>()
-                    .ForMember(dest => dest.TaxNumber, opt => opt.MapFrom(src => src.TaxNumber)); // Mapear CPF para TaxNumber
+                    .ForMember(dest => dest.TaxNumber, opt => opt.MapFrom(src => src.TaxNumber));
                 cfg.CreateMap<UserDTO, User>()
-                    .ForMember(dest => dest.TaxNumber, opt => opt.MapFrom(src => src.TaxNumber)); // Mapear TaxNumber para CPF
+                    .ForMember(dest => dest.TaxNumber, opt => opt.MapFrom(src => src.TaxNumber));
             });
 
             _mapper = config.CreateMapper();
@@ -26,12 +25,10 @@ namespace Core.Mappers
         {
             if (input is User user)
             {
-                // Mapeia de User para UserDTO
                 return _mapper.Map<UserDTO>(user);
             }
             else if (input is UserDTO userDTO)
             {
-                // Mapeia de UserDTO para User
                 return _mapper.Map<User>(userDTO);
             }
             else
