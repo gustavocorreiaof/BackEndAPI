@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Entities;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using System.Text.Json;
 
@@ -9,7 +10,6 @@ namespace Core.Middlewere
         private readonly RequestDelegate _next;
         private readonly IMongoCollection<ExceptionLog> _exceptionLogsCollection;
 
-        // Injeção de dependência do MongoDB
         public ExceptionHandlingMiddleware(RequestDelegate next, IMongoDatabase database)
         {
             _next = next;
@@ -20,11 +20,10 @@ namespace Core.Middlewere
         {
             try
             {
-                await _next(context); // Passa a requisição adiante
+                await _next(context);
             }
             catch (Exception ex)
             {
-                // Log de erro no MongoDB
                 await LogExceptionToMongoDBAsync(ex);
 
                 int statusCode = 400;
@@ -61,25 +60,12 @@ namespace Core.Middlewere
 
             try
             {
-                // Inserir o log de exceção no MongoDB
                 await _exceptionLogsCollection.InsertOneAsync(exceptionLog);
             }
             catch (Exception mongoEx)
             {
-                // Se houver falha ao salvar no MongoDB, pode registrar em outro lugar, se necessário
                 Console.WriteLine($"Falha ao gravar log no MongoDB: {mongoEx.Message}");
             }
         }
-    }
-
-    // Modelo de log de exceção
-    public class ExceptionLog
-    {
-        public string Message { get; set; }
-        public string StackTrace { get; set; }
-        public DateTime Timestamp { get; set; }
-        public string ExceptionType { get; set; }
-        public string InnerExceptionMessage { get; set; }
-        public string InnerExceptionStackTrace { get; set; }
-    }
+    }    
 }
