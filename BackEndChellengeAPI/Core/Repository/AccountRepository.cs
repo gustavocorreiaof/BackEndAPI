@@ -2,6 +2,8 @@
 using Core.Entities;
 using Core.Repository.Settings;
 
+namespace Core.Repository;
+
 public class AccountRepository : BaseRepository
 {
     public Account GetAccountByUserId(long userId)

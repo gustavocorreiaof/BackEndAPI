@@ -2,6 +2,8 @@
 using Core.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
 
+namespace Core.Util.Attributes;
+
 public class CpfCnpjValidationAttribute : ValidationAttribute
 {
     private string _relatedProperty = "UserType";

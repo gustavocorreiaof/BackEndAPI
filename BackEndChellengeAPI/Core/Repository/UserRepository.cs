@@ -1,7 +1,8 @@
-﻿using System.Data.SqlClient;
-using Core.BusinesseRules;
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Repository.Settings;
+using System.Data.SqlClient;
+
+namespace Core.Repository;
 
 public class UserRepository : BaseRepository
 {

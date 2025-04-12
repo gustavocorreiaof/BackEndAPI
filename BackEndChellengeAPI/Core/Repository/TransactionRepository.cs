@@ -2,6 +2,8 @@
 using Core.Entities;
 using Core.Repository.Settings;
 
+namespace Core.Repository;
+
 public class TransactionRepository : BaseRepository
 {
     public void PerformTransaction(User payerId, User payeeId, decimal transferValue)
