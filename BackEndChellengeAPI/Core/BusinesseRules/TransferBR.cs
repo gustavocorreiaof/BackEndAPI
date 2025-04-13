@@ -1,5 +1,6 @@
 ﻿using Core.DTOs;
 using Core.Entities;
+using Core.Enums;
 using Core.Exceptions;
 using Core.Responses;
 using Core.Services;

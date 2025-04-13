@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Enums;
 using Core.Repository.Settings;
 using System.Data.SqlClient;
 

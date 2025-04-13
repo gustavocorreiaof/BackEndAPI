@@ -1,10 +1,9 @@
-using Core.Entities;
+using Core.Enums;
 using Core.Requests;
 using Core.Responses;
 using Core.Util.Msgs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Linq;
 using System.Net.Http.Json;
 
 

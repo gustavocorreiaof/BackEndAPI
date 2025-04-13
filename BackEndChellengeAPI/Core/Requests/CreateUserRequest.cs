@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Enums;
 using Core.Util.Attributes;
 using Core.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
