@@ -14,7 +14,7 @@ public class APIControllerIntegrationTests
 {
     private WebApplicationFactory<Program> _factory;
     private HttpClient _client;
-    private string InsertUserURL = "/API/InsertUser";
+    private string InsertUserURL = "/User/InsertUser";
 
     [SetUp]
     public void Setup()
