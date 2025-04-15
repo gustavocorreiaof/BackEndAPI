@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Repository;
 
 namespace Core.Services
 {

@@ -1,6 +1,7 @@
 using Core.BusinesseRules;
 using Core.Interfaces;
 using Core.Middlewere;
+using Core.Repository;
 using Core.Repository.Settings;
 using MongoDB.Driver;
 

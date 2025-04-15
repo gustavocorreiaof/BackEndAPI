@@ -1,4 +1,5 @@
-﻿using Core.Util.Msgs;
+﻿using Core.Util.Attributes;
+using Core.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Requests
