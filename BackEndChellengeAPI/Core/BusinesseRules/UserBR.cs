@@ -10,7 +10,7 @@ namespace Core.BusinesseRules
 {
     public class UserBR : IUserBR
     {
-        public void CreateOrUpdateUser(UserDTO userDTO)
+        public void SaveUser(UserDTO userDTO)
         {
             VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
 

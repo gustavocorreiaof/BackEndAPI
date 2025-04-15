@@ -4,6 +4,6 @@ namespace Core.Interfaces
 {
     public interface IUserBR
     {
-        void CreateOrUpdateUser(UserDTO user);
+        void SaveUser(UserDTO user);
     }
 }

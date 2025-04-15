@@ -12,11 +12,11 @@ namespace BackEndChellengeAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class APIController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserBR _userService;
 
-        public APIController(IUserBR userService)
+        public UserController(IUserBR userService)
         {
             _userService = userService;
         }
@@ -33,7 +33,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email, request.UserType, userId: null);
 
-            new UserBR().CreateOrUpdateUser(userDTO);
+            new UserBR().SaveUser(userDTO);
 
             return Ok(ApiMsg.INF001);
         }
@@ -42,26 +42,9 @@ namespace BackEndChellengeAPI.Controllers
         public IActionResult UpdateUser([FromBody] UpdateUserRequest request)
         {
             UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, request.NewTaxNumber, request.NewEmail, userType: null, request.UserId);
-            new UserBR().CreateOrUpdateUser(userDTO);
+            new UserBR().SaveUser(userDTO);
 
             return Ok("");
-        }
-
-        [HttpPost("SendTransaction")]
-        public async Task<IActionResult> SendTransaction([FromBody] SendTransactionRequest request)
-        {
-            TransferDTO transferDTO = new(request.PayerTaxNumber, request.PayeeTaxNumber, request.TransferValue);
-
-            await TransferBR.PerformTransactionAsync(transferDTO);
-
-            var notificationService = new NotificationBR();
-
-            bool notificationpublished = await notificationService.SendNotificationAsync(transferDTO.PayeeEmail, "Your payment has been received successfully.");
-
-            if (!notificationpublished)
-                return StatusCode(206, "Transfer partially completed. Notification has not sended.");
-
-            return Ok("Transfer completed successfully.");
-        }
+        }        
     }
 }
