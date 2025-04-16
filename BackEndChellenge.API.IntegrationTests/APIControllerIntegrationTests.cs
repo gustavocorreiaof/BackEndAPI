@@ -36,7 +36,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_InvalidTaxNumber_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest
+        CreateUserRequest request = new CreateUserRequest
         {
             Name = "Maria",
             Password = "Password123!",
@@ -59,7 +59,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_WhenTaxNumberIsNull_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest()
+        CreateUserRequest request = new CreateUserRequest()
         {
             Name = "Maryn",
             Email = "exemple1@gmail.com",
@@ -79,7 +79,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_WhenNameIsNull_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest()
+        CreateUserRequest request = new CreateUserRequest()
         {
             Name = null,
             Email = "exemple1@gmail.com",
@@ -99,7 +99,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_WhenEmailIsNull_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest()
+        CreateUserRequest request = new CreateUserRequest()
         {
             Name = "Test",
             Email = null,
@@ -119,7 +119,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_WhenPasswordIsInvalid_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest()
+        CreateUserRequest request = new CreateUserRequest()
         {
             Name = "Test",
             Email = "exemple1@gmail.com",
@@ -140,7 +140,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_WhenTryInserUserWithUsedTaxNumber_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest()
+        CreateUserRequest request = new CreateUserRequest()
         {
             Name = "Test",
             Email = "exemple1@gmail.com",
@@ -159,7 +159,7 @@ public class APIControllerIntegrationTests
     [Test]
     public async Task InsertUser_WhenTryInserUserWithUsedEmail_ReturnsBadRequest()
     {
-        var request = new CreateUserRequest()
+        CreateUserRequest request = new CreateUserRequest()
         {
             Name = "Test",
             Email = "miras@example.com",
