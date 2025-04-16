@@ -13,30 +13,23 @@ namespace Core.BusinesseRules
     {
         public static async Task PerformTransactionAsync(TransferDTO dto)
         {
-            try
-            {
-                if (dto.TransferValue <= 0)
-                    throw new ApiException("The TransferValue must be greater than 0.");
+            if (dto.TransferValue <= 0)
+                throw new ApiException("The TransferValue must be greater than 0.");
 
-                User payerUser = new UserService().GetUserByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException("There is no registered user with the FromTaxNumber provided.");
+            User payerUser = new UserService().GetUserByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException("There is no registered user with the FromTaxNumber provided.");
 
-                ValidateUserCanMakeTransfers(payerUser, dto.TransferValue);
+            ValidateUserCanMakeTransfers(payerUser, dto.TransferValue);
 
-                User payeeUser = new UserService().GetUserByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException("There is no registered user with the ToTaxNumber provided.");
+            User payeeUser = new UserService().GetUserByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException("There is no registered user with the ToTaxNumber provided.");
 
-                bool isAuthorized = await IsTransferAuthorizedAsync();
+            bool isAuthorized = await IsTransferAuthorizedAsync();
 
-                if (!isAuthorized) 
-                    throw new ApiException("Transaction not authorized.");
+            if (!isAuthorized)
+                throw new ApiException("Transaction not authorized.");
 
-                new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
+            new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
 
-                dto.PayeeEmail = payeeUser.Email;
-            }
-            catch
-            {
-                throw;
-            }
+            dto.PayeeEmail = payeeUser.Email;
         }
 
         private static void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
