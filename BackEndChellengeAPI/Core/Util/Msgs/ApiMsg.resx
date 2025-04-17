@@ -153,4 +153,7 @@
   <data name="INF004" xml:space="preserve">
     <value>Hello {0}, you have received a transfer from {1} in the amount of R$ {2:F2}.</value>
   </data>
+  <data name="INF005" xml:space="preserve">
+    <value>Your transfer in the amount of {0} was successfully sent to {1}.</value>
+  </data>
 </root>

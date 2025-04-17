@@ -14,7 +14,7 @@ namespace Core.BusinesseRules
         private readonly string _senderPassword = AppSettings.SenderPassword;
         private readonly string _senderName = AppSettings.SenderName;
 
-        public async Task<bool> SendEmailInternalAsync(TransferEventArgs e)
+        public async Task<bool> SendEmailToPayeeAsync(TransferEventArgs e)
         {
             try
             {
@@ -44,9 +44,40 @@ namespace Core.BusinesseRules
             }
         }
 
+        public async Task<bool> SendEmailToPayerAsync(TransferEventArgs e)
+        {
+            try
+            {
+                var smtpClient = new SmtpClient(_smtpServer)
+                {
+                    Port = _smtpPort,
+                    Credentials = new NetworkCredential(_senderEmail, _senderPassword),
+                    EnableSsl = true
+                };
+
+                var mensagem = new MailMessage
+                {
+                    From = new MailAddress(_senderEmail, _senderName),
+                    Subject = ApiMsg.INF003,
+                    Body = string.Format(ApiMsg.INF005, e.Amount, e.Payee.Name),
+                    IsBodyHtml = false
+                };
+
+                mensagem.To.Add(e.Payer.Email);
+
+                await smtpClient.SendMailAsync(mensagem);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void SendEmail(object? sender, TransferEventArgs e)
         {
-            _ = SendEmailInternalAsync(e);
+            _ = SendEmailToPayeeAsync(e);
+            _ = SendEmailToPayerAsync(e);
         }
     }
 }

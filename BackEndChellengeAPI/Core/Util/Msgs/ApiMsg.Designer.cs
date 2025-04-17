@@ -167,5 +167,14 @@ namespace Core.Util.Msgs {
                 return ResourceManager.GetString("INF004", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Your transfer in the amount of {0} was successfully sent to {1}..
+        /// </summary>
+        public static string INF005 {
+            get {
+                return ResourceManager.GetString("INF005", resourceCulture);
+            }
+        }
     }
 }
