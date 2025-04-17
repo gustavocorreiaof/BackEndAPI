@@ -17,9 +17,9 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - ✅ Data validation
 - ✅ Middleware to log exceptions to MongoDB
 - ✅ Send Email for both parts of transaction
+- ✅ JWT implementation for authentication
 - 🛠️ Integration tests using NUnit
 - [] Publish Message on RabbitMQ
-- [] JWT implementation for authentication
 - [] Use UnityOfWork
 - [] Use Elastic
 - [] Swagger for API documentation
