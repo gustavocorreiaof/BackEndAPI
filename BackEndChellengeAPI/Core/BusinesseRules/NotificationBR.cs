@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Core.BusinesseRules
 
         public async Task<bool> SendNotificationAsync(string to, string message)
         {
-            var url = "https://util.devi.tools/api/v1/notify";
+            var url = AppSettings.SendNotificationURL;
 
             var payload = new
             {

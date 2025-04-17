@@ -5,6 +5,7 @@ using Core.Exceptions;
 using Core.Repository;
 using Core.Responses;
 using Core.Services;
+using Core.Util;
 using System.Text.Json;
 
 namespace Core.BusinesseRules
@@ -43,7 +44,7 @@ namespace Core.BusinesseRules
 
         private static async Task<bool> IsTransferAuthorizedAsync()
         {
-            var requestUri = "https://util.devi.tools/api/v2/authorize";
+            var requestUri = AppSettings.AuthorizeTransferURL;
             try
             {
                 HttpClient _httpClient = new HttpClient();

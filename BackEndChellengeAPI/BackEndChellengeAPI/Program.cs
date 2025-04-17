@@ -3,14 +3,17 @@ using Core.Interfaces;
 using Core.Middlewere;
 using Core.Repository;
 using Core.Repository.Settings;
+using Core.Util;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
+AppSettings.Init(builder.Configuration);
+
 builder.Services.AddSingleton<IMongoDatabase>(serviceProvider =>
 {
-    var client = new MongoClient("mongodb://localhost:27017/");
-    return client.GetDatabase("BackEndAPI");
+    var client = new MongoClient(AppSettings.MongoUrl);
+    return client.GetDatabase(AppSettings.MongoDatabase);
 });
 
 builder.Services.AddControllers();
