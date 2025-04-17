@@ -1,6 +1,7 @@
 ﻿using Core.BusinesseRules;
 using Core.DTOs;
 using Core.Requests;
+using Core.Util.Msgs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEndChellengeAPI.Controllers
@@ -14,16 +15,9 @@ namespace BackEndChellengeAPI.Controllers
         {
             TransferDTO transferDTO = new(request.PayerTaxNumber, request.PayeeTaxNumber, request.TransferValue);
 
-            await TransferBR.PerformTransactionAsync(transferDTO);
+            await TransferBR.PerformTransactionAsync(transferDTO);           
 
-            /*var notificationService = new NotificationBR();
-
-            bool notificationpublished = await notificationService.SendNotificationAsync(transferDTO.PayeeEmail, "Your payment has been received successfully.");
-
-            if (!notificationpublished)
-                return StatusCode(206, "Transfer partially completed. Notification has not sended.");*/
-
-            return Ok("Transfer completed successfully.");
+            return Ok(ApiMsg.INF002);
         }
     }
 }

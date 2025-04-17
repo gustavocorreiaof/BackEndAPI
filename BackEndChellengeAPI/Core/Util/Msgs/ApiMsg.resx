@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EX001" xml:space="preserve">
+    <value>The TransferValue must be greater than 0.</value>
+  </data>
   <data name="EX002" xml:space="preserve">
     <value>There is already a user with this TaxNumber.</value>
   </data>
   <data name="EX003" xml:space="preserve">
     <value>There is already a user with this Email.</value>
   </data>
+  <data name="EX004" xml:space="preserve">
+    <value>Transaction not authorized.</value>
+  </data>
+  <data name="EX005" xml:space="preserve">
+    <value>There is no registered user with the FromTaxNumber provided.</value>
+  </data>
+  <data name="EX006" xml:space="preserve">
+    <value>There is no registered user with the ToTaxNumber provided.</value>
+  </data>
+  <data name="EX007" xml:space="preserve">
+    <value>Users of type CNPJ cannot make transfers.</value>
+  </data>
+  <data name="EX008" xml:space="preserve">
+    <value>The source account does not have sufficient funds for the transaction.</value>
+  </data>
   <data name="INF001" xml:space="preserve">
     <value>User successfully created.</value>
+  </data>
+  <data name="INF002" xml:space="preserve">
+    <value>Transfer completed successfully.</value>
+  </data>
+  <data name="INF003" xml:space="preserve">
+    <value>Transfer Completed</value>
+  </data>
+  <data name="INF004" xml:space="preserve">
+    <value>Hello {0}, you have received a transfer from {1} in the amount of R$ {2:F2}.</value>
   </data>
 </root>

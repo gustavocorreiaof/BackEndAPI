@@ -1,6 +1,4 @@
-﻿using Core.Entities.Base;
-
-namespace Core.Entities
+﻿namespace Core.Entities
 {
     public class TransferEventArgs : EventArgs
     {
