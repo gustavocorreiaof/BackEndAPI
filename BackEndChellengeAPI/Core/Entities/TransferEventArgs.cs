@@ -1,8 +1,6 @@
-﻿using Core.Entities.Base;
-
-namespace Core.Entities
+﻿namespace Core.Entities
 {
-    public class Transaction:BaseEntity
+    public class TransferEventArgs : EventArgs
     {
         public User Payer { get; set; }
         public User Payee { get; set; }

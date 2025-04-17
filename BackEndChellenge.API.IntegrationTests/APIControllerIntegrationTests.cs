@@ -164,7 +164,7 @@ public class APIControllerIntegrationTests
             Name = "Test",
             Email = "miras@example.com",
             Password = "Password123!",
-            TaxNumber = "62822624000141"
+            TaxNumber = "84542889000129"
         };
 
         var response = await _client.PostAsJsonAsync(InsertUserURL, request);

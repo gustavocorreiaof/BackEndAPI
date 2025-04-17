@@ -6,40 +6,54 @@ using Core.Repository;
 using Core.Responses;
 using Core.Services;
 using Core.Util;
+using Core.Util.Msgs;
 using System.Text.Json;
 
 namespace Core.BusinesseRules
 {
-    public static class TransferBR
+    public class TransferBR
     {
+        public static event EventHandler<TransferEventArgs>? TransferCompleted;
+
         public static async Task PerformTransactionAsync(TransferDTO dto)
         {
             if (dto.TransferValue <= 0)
-                throw new ApiException("The TransferValue must be greater than 0.");
+                throw new ApiException(ApiMsg.EX001);
 
-            User payerUser = new UserService().GetUserByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException("There is no registered user with the FromTaxNumber provided.");
+            User payerUser = new UserService().GetUserByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException(ApiMsg.EX005);
 
             ValidateUserCanMakeTransfers(payerUser, dto.TransferValue);
 
-            User payeeUser = new UserService().GetUserByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException("There is no registered user with the ToTaxNumber provided.");
+            User payeeUser = new UserService().GetUserByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException(ApiMsg.EX006);
 
             bool isAuthorized = await IsTransferAuthorizedAsync();
 
             if (!isAuthorized)
-                throw new ApiException("Transaction not authorized.");
+                throw new ApiException(ApiMsg.EX004);
 
             new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
 
-            dto.PayeeEmail = payeeUser.Email;
+            OnTransferCompleted(new TransferEventArgs
+            {
+                Payer = payerUser,
+                Payee = payeeUser,
+                Amount = dto.TransferValue,
+                TransferDate = DateTime.Now
+            });
         }
 
         private static void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
         {
-            if (user.Type == UserType.CNPJ) throw new ApiException("Users of type CNPJ cannot make transfers.");
+            if (user.Type == UserType.CNPJ) throw new ApiException(ApiMsg.EX007);
 
             Account fromAccount = new AccountRepository().GetAccountByUserId(user.Id);
 
-            if (fromAccount.Balance < transferTotalValue) throw new ApiException("The source account does not have sufficient funds for the transaction.");
+            if (fromAccount.Balance < transferTotalValue) throw new ApiException(ApiMsg.EX008);
+        }
+
+        private static void OnTransferCompleted(TransferEventArgs e)
+        {
+            TransferCompleted?.Invoke(null, e);
         }
 
         private static async Task<bool> IsTransferAuthorizedAsync()
@@ -58,9 +72,8 @@ namespace Core.BusinesseRules
 
                 return (bool)(authorizationResponse?.Data.authorization);
             }
-            catch (HttpRequestException ex)
+            catch
             {
-                Console.WriteLine($"Erro ao chamar o serviço autorizador: {ex.Message}");
                 return false;
             }
         }

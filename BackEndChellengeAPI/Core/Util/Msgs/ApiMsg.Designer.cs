@@ -61,6 +61,15 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The TransferValue must be greater than 0..
+        /// </summary>
+        public static string EX001 {
+            get {
+                return ResourceManager.GetString("EX001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a There is already a user with this TaxNumber..
         /// </summary>
         public static string EX002 {
@@ -79,11 +88,92 @@ namespace Core.Util.Msgs {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Transaction not authorized..
+        /// </summary>
+        public static string EX004 {
+            get {
+                return ResourceManager.GetString("EX004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a There is no registered user with the FromTaxNumber provided..
+        /// </summary>
+        public static string EX005 {
+            get {
+                return ResourceManager.GetString("EX005", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a There is no registered user with the ToTaxNumber provided..
+        /// </summary>
+        public static string EX006 {
+            get {
+                return ResourceManager.GetString("EX006", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Users of type CNPJ cannot make transfers..
+        /// </summary>
+        public static string EX007 {
+            get {
+                return ResourceManager.GetString("EX007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The source account does not have sufficient funds for the transaction..
+        /// </summary>
+        public static string EX008 {
+            get {
+                return ResourceManager.GetString("EX008", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a User successfully created..
         /// </summary>
         public static string INF001 {
             get {
                 return ResourceManager.GetString("INF001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Transfer completed successfully..
+        /// </summary>
+        public static string INF002 {
+            get {
+                return ResourceManager.GetString("INF002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Transfer Completed.
+        /// </summary>
+        public static string INF003 {
+            get {
+                return ResourceManager.GetString("INF003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Hello {0}, you have received a transfer from {1} in the amount of R$ {2:F2}..
+        /// </summary>
+        public static string INF004 {
+            get {
+                return ResourceManager.GetString("INF004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Your transfer in the amount of {0} was successfully sent to {1}..
+        /// </summary>
+        public static string INF005 {
+            get {
+                return ResourceManager.GetString("INF005", resourceCulture);
             }
         }
     }

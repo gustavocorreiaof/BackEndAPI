@@ -1,45 +1,83 @@
-﻿using Core.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
+using Core.Util;
+using Core.Util.Msgs;
+using System.Net;
+using System.Net.Mail;
 
 namespace Core.BusinesseRules
 {
     public class NotificationBR
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private readonly string _smtpServer = AppSettings.SmtpServer;
+        private readonly int _smtpPort = AppSettings.SmtpPort;
+        private readonly string _senderEmail = AppSettings.SenderEmail;
+        private readonly string _senderPassword = AppSettings.SenderPassword;
+        private readonly string _senderName = AppSettings.SenderName;
 
-        public async Task<bool> SendNotificationAsync(string to, string message)
+        public async Task<bool> SendEmailToPayeeAsync(TransferEventArgs e)
         {
-            var url = AppSettings.SendNotificationURL;
-
-            var payload = new
-            {
-                to = to,             
-                message = message   
-            };
-
-            var content = new StringContent(
-                System.Text.Json.JsonSerializer.Serialize(payload),
-                Encoding.UTF8,
-                "application/json"
-            );
-
             try
             {
-                var response = await _httpClient.PostAsync(url, content);
+                var smtpClient = new SmtpClient(_smtpServer)
+                {
+                    Port = _smtpPort,
+                    Credentials = new NetworkCredential(_senderEmail, _senderPassword),
+                    EnableSsl = true
+                };
 
-                if (!response.IsSuccessStatusCode)
-                    return false;
+                var mensagem = new MailMessage
+                {
+                    From = new MailAddress(_senderEmail, _senderName),
+                    Subject = ApiMsg.INF003,
+                    Body = string.Format(ApiMsg.INF004, e.Payee.Name, e.Payer.Name, e.Amount),
+                    IsBodyHtml = false
+                };
 
+                mensagem.To.Add(e.Payee.Email);
+
+                await smtpClient.SendMailAsync(mensagem);
                 return true;
             }
             catch
             {
-                throw;
+                return false;
             }
+        }
+
+        public async Task<bool> SendEmailToPayerAsync(TransferEventArgs e)
+        {
+            try
+            {
+                var smtpClient = new SmtpClient(_smtpServer)
+                {
+                    Port = _smtpPort,
+                    Credentials = new NetworkCredential(_senderEmail, _senderPassword),
+                    EnableSsl = true
+                };
+
+                var mensagem = new MailMessage
+                {
+                    From = new MailAddress(_senderEmail, _senderName),
+                    Subject = ApiMsg.INF003,
+                    Body = string.Format(ApiMsg.INF005, e.Amount, e.Payee.Name),
+                    IsBodyHtml = false
+                };
+
+                mensagem.To.Add(e.Payer.Email);
+
+                await smtpClient.SendMailAsync(mensagem);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void SendEmail(object? sender, TransferEventArgs e)
+        {
+            _ = SendEmailToPayeeAsync(e);
+            _ = SendEmailToPayerAsync(e);
         }
     }
 }
