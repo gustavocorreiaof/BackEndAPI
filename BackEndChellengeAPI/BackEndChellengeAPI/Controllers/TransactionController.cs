@@ -1,7 +1,7 @@
-﻿using Core.API.Requests;
-using Core.Common.BusinesseRules;
-using Core.Common.DTOs;
-using Core.Common.Util.Msgs;
+﻿using BackEndChellengeAPI.Requests;
+using Core.Domain.DTOs;
+using Core.Domain.Msgs;
+using Core.Services.BusinesseRules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

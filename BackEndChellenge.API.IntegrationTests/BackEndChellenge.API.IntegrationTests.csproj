@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BackEndChellengeAPI\BackEndChellengeAPI\BackEndChellengeAPI.csproj" />
-    <ProjectReference Include="..\BackEndChellengeAPI\Core\Core.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

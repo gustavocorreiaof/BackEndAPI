@@ -17,8 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core.API\Core.API.csproj" />
-    <ProjectReference Include="..\Core\Core.Common.csproj" />
+    <ProjectReference Include="..\..\Core\Core.Services\Core.Services.csproj" />
   </ItemGroup>
 
 </Project>

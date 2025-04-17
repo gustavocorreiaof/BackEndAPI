@@ -1,9 +1,3 @@
-using Core.Common.Enums;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http.Json;
-
-
 namespace BackEndChellenge.API.IntegrationTests;
 
 [TestFixture]
