@@ -1,10 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Core.Common.Responses
+namespace Core.Common.Json
 {
     public class Data
     {
         [JsonPropertyName("authorization")]
-        public bool authorization { get; set; }
+        public bool Authorization { get; set; }
     }
 }

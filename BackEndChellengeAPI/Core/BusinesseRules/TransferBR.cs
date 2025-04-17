@@ -2,8 +2,8 @@
 using Core.Common.Entities;
 using Core.Common.Enums;
 using Core.Common.Exceptions;
+using Core.Common.Json;
 using Core.Common.Repository;
-using Core.Common.Responses;
 using Core.Common.Services;
 using Core.Common.Util;
 using Core.Common.Util.Msgs;
@@ -68,9 +68,9 @@ namespace Core.Common.BusinesseRules
 
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                var authorizationResponse = JsonSerializer.Deserialize<AuthorizationResponse>(responseBody);
+                var authorizationResponse = JsonSerializer.Deserialize<AuthorizationJson>(responseBody);
 
-                return (bool)(authorizationResponse?.Data.authorization);
+                return (bool)(authorizationResponse?.Data.Authorization)!;
             }
             catch
             {

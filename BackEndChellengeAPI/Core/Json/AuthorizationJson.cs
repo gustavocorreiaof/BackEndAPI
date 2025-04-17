@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Core.Common.Responses
+namespace Core.Common.Json
 {
-    public class AuthorizationResponse
+    public class AuthorizationJson
     {
         [JsonPropertyName("status")]
         public string Status { get; set; }
