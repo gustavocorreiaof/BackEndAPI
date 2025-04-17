@@ -10,8 +10,10 @@ using System.Text.Json;
 
 namespace Core.BusinesseRules
 {
-    public static class TransferBR
+    public class TransferBR
     {
+        public static event EventHandler<TransferEventArgs>? TransferCompleted;
+
         public static async Task PerformTransactionAsync(TransferDTO dto)
         {
             if (dto.TransferValue <= 0)
@@ -23,14 +25,22 @@ namespace Core.BusinesseRules
 
             User payeeUser = new UserService().GetUserByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException("There is no registered user with the ToTaxNumber provided.");
 
-            bool isAuthorized = await IsTransferAuthorizedAsync();
+            /*bool isAuthorized = await IsTransferAuthorizedAsync();
 
             if (!isAuthorized)
-                throw new ApiException("Transaction not authorized.");
+                throw new ApiException("Transaction not authorized.");*/
 
             new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
 
             dto.PayeeEmail = payeeUser.Email;
+
+            OnTransferCompleted(new TransferEventArgs
+            {
+                Payer = payerUser,
+                Payee = payeeUser,
+                Amount = dto.TransferValue,
+                TransferDate = DateTime.Now
+            });
         }
 
         private static void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
@@ -63,6 +73,11 @@ namespace Core.BusinesseRules
                 Console.WriteLine($"Erro ao chamar o serviço autorizador: {ex.Message}");
                 return false;
             }
+        }
+
+        protected static void OnTransferCompleted(TransferEventArgs e)
+        {
+            TransferCompleted?.Invoke(null, e);
         }
     }
 }

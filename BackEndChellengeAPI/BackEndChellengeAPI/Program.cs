@@ -23,6 +23,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); 
 builder.Services.AddScoped<IUserBR, UserBR>();
 
+NotificationBR notificacaoService = new NotificationBR();
+
+TransferBR.TransferCompleted += notificacaoService.SendEmail;
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

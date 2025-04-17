@@ -16,12 +16,12 @@ namespace BackEndChellengeAPI.Controllers
 
             await TransferBR.PerformTransactionAsync(transferDTO);
 
-            var notificationService = new NotificationBR();
+            /*var notificationService = new NotificationBR();
 
             bool notificationpublished = await notificationService.SendNotificationAsync(transferDTO.PayeeEmail, "Your payment has been received successfully.");
 
             if (!notificationpublished)
-                return StatusCode(206, "Transfer partially completed. Notification has not sended.");
+                return StatusCode(206, "Transfer partially completed. Notification has not sended.");*/
 
             return Ok("Transfer completed successfully.");
         }
