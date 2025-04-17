@@ -1,9 +1,9 @@
-﻿using Core.Entities;
-using Core.Enums;
-using Core.Repository.Settings;
+﻿using Core.Common.Entities;
+using Core.Common.Enums;
+using Core.Common.Repository.Base;
 using System.Data.SqlClient;
 
-namespace Core.Repository;
+namespace Core.Common.Repository;
 
 public class UserRepository : BaseRepository
 {
@@ -140,7 +140,7 @@ public class UserRepository : BaseRepository
                 //command.Parameters.AddWithValue("@paramUserId", userId);
                 //command.Parameters.AddWithValue("@paramNewEmail", newEmail);
 
-                var result = command.ExecuteScalar();                
+                var result = command.ExecuteScalar();
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Core.Exceptions
+﻿namespace Core.Common.Exceptions
 {
     public class ApiException : Exception
     {

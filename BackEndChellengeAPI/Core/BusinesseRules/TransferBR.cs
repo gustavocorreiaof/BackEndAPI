@@ -1,15 +1,15 @@
-﻿using Core.DTOs;
-using Core.Entities;
-using Core.Enums;
-using Core.Exceptions;
-using Core.Repository;
-using Core.Responses;
-using Core.Services;
-using Core.Util;
-using Core.Util.Msgs;
+﻿using Core.Common.DTOs;
+using Core.Common.Entities;
+using Core.Common.Enums;
+using Core.Common.Exceptions;
+using Core.Common.Repository;
+using Core.Common.Responses;
+using Core.Common.Services;
+using Core.Common.Util;
+using Core.Common.Util.Msgs;
 using System.Text.Json;
 
-namespace Core.BusinesseRules
+namespace Core.Common.BusinesseRules
 {
     public class TransferBR
     {

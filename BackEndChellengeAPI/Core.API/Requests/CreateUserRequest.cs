@@ -1,9 +1,9 @@
-﻿using Core.Enums;
-using Core.Util.Attributes;
-using Core.Util.Msgs;
+﻿using Core.API.Requests.Attributes;
+using Core.Common.Enums;
+using Core.Common.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Requests
+namespace Core.API.Requests
 {
     public class CreateUserRequest
     {

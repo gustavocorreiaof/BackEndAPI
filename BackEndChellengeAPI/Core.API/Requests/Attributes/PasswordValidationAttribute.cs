@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Core.Util.Attributes;
+namespace Core.API.Requests.Attributes;
 public class PasswordValidationAttribute : ValidationAttribute
 {
     public PasswordValidationAttribute() : base("The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character.") { }

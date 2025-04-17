@@ -1,10 +1,10 @@
-﻿using Core.Entities;
-using Core.Util;
-using Core.Util.Msgs;
+﻿using Core.Common.Entities;
+using Core.Common.Util;
+using Core.Common.Util.Msgs;
 using System.Net;
 using System.Net.Mail;
 
-namespace Core.BusinesseRules
+namespace Core.Common.BusinesseRules
 {
     public class NotificationBR
     {

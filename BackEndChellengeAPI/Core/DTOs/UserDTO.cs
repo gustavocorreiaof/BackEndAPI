@@ -1,6 +1,6 @@
-﻿using Core.Enums;
+﻿using Core.Common.Enums;
 
-namespace Core.DTOs
+namespace Core.Common.DTOs
 {
     public class UserDTO
     {

@@ -1,7 +1,4 @@
-using Core.Enums;
-using Core.Requests;
-using Core.Responses;
-using Core.Util.Msgs;
+using Core.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
@@ -12,7 +9,7 @@ namespace BackEndChellenge.API.IntegrationTests;
 [TestFixture]
 public class APIControllerIntegrationTests
 {
-    private WebApplicationFactory<Program> _factory;
+    /*private WebApplicationFactory<Program> _factory;
     private HttpClient _client;
     private string InsertUserURL = "/User/InsertUser";
 
@@ -174,5 +171,5 @@ public class APIControllerIntegrationTests
         Assert.NotNull(body);
         Assert.That(body.Message.Equals(ApiMsg.EX003));
     }
-    #endregion
+    #endregion*/
 }

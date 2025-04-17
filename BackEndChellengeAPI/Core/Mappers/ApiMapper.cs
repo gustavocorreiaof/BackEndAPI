@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Core.DTOs;
-using Core.Entities;
+using Core.Common.DTOs;
+using Core.Common.Entities;
 
-namespace Core.Mappers
+namespace Core.Common.Mappers
 {
     public class ApiMapper
     {

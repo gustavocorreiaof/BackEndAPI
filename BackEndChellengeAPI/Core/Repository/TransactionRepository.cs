@@ -1,8 +1,8 @@
 ﻿using System.Data.SqlClient;
-using Core.Entities;
-using Core.Repository.Settings;
+using Core.Common.Entities;
+using Core.Common.Repository.Base;
 
-namespace Core.Repository;
+namespace Core.Common.Repository;
 
 public class TransactionRepository : BaseRepository
 {
@@ -21,8 +21,8 @@ public class TransactionRepository : BaseRepository
                 command.Parameters.AddWithValue("@paramTransferValue", transferValue);
                 command.Parameters.AddWithValue("@paramTransferDate", DateTime.Now);
 
-                var result = command.ExecuteScalar();             
+                var result = command.ExecuteScalar();
             }
         }
-    }    
+    }
 }

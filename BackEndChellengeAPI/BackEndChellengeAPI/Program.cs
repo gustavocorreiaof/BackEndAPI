@@ -1,9 +1,9 @@
-using Core.BusinesseRules;
-using Core.Interfaces;
-using Core.Middlewere;
-using Core.Repository;
-using Core.Repository.Settings;
-using Core.Util;
+using Core.API.Middlewere;
+using Core.Common.BusinesseRules;
+using Core.Common.Interfaces;
+using Core.Common.Repository;
+using Core.Common.Repository.Base;
+using Core.Common.Util;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;

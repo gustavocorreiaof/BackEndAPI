@@ -1,4 +1,4 @@
-﻿namespace Core.Entities
+﻿namespace Core.Common.Exceptions
 {
     public class ExceptionLog
     {

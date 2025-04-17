@@ -1,7 +1,7 @@
-﻿using Core.Entities.Base;
-using Core.Enums;
+﻿using Core.Common.Entities.Base;
+using Core.Common.Enums;
 
-namespace Core.Entities
+namespace Core.Common.Entities
 {
     public class User : BaseEntity
     {
@@ -17,14 +17,14 @@ namespace Core.Entities
 
         public User(long id, string name, string pwd, string cpf, string email, UserType userType)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Password = pwd;
-            this.TaxNumber = cpf;
-            this.Email = email;
-            this.Type = userType;
+            Id = id;
+            Name = name;
+            Password = pwd;
+            TaxNumber = cpf;
+            Email = email;
+            Type = userType;
         }
 
-        public User(){}
+        public User() { }
     }
 }

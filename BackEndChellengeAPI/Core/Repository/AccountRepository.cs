@@ -1,8 +1,8 @@
 ﻿using System.Data.SqlClient;
-using Core.Entities;
-using Core.Repository.Settings;
+using Core.Common.Entities;
+using Core.Common.Repository.Base;
 
-namespace Core.Repository;
+namespace Core.Common.Repository;
 
 public class AccountRepository : BaseRepository
 {

@@ -1,12 +1,12 @@
-﻿using Core.DTOs;
-using Core.Entities;
-using Core.Exceptions;
-using Core.Interfaces;
-using Core.Mappers;
-using Core.Services;
-using Core.Util.Msgs;
+﻿using Core.Common.DTOs;
+using Core.Common.Entities;
+using Core.Common.Exceptions;
+using Core.Common.Interfaces;
+using Core.Common.Mappers;
+using Core.Common.Services;
+using Core.Common.Util.Msgs;
 
-namespace Core.BusinesseRules
+namespace Core.Common.BusinesseRules
 {
     public class UserBR : IUserBR
     {
@@ -15,8 +15,8 @@ namespace Core.BusinesseRules
             VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
 
             User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
-            
-            if(userDTO.UserId == null)
+
+            if (userDTO.UserId == null)
                 new UserService().InsertUser(user);
             else
                 new UserService().UpdateUser(user);

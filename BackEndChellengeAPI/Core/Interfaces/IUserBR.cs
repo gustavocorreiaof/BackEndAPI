@@ -1,6 +1,6 @@
-﻿using Core.DTOs;
+﻿using Core.Common.DTOs;
 
-namespace Core.Interfaces
+namespace Core.Common.Interfaces
 {
     public interface IUserBR
     {

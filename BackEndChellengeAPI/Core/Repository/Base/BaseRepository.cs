@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Core.Repository.Settings
+namespace Core.Common.Repository.Base
 {
     public class BaseRepository
     {

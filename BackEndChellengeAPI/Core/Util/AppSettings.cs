@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Core.Util
+namespace Core.Common.Util
 {
     public static class AppSettings
     {

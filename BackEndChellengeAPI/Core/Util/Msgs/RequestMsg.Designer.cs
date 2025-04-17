@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Core.Util.Msgs {
+namespace Core.Common.Util.Msgs {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Core.Util.Msgs {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Core.Util.Msgs.RequestMsg", typeof(RequestMsg).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Core.Common.Util.Msgs.RequestMsg", typeof(RequestMsg).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

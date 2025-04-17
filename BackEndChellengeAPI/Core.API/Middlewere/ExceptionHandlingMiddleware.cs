@@ -1,9 +1,9 @@
-﻿using Core.Entities;
+﻿using Core.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using System.Text.Json;
 
-namespace Core.Middlewere
+namespace Core.API.Middlewere
 {
     public class ExceptionHandlingMiddleware
     {
@@ -31,7 +31,7 @@ namespace Core.Middlewere
                 var errorResponse = new
                 {
                     StatusCode = statusCode,
-                    Message = ex.Message
+                    ex.Message
                 };
 
                 context.Response.StatusCode = statusCode;
@@ -67,5 +67,5 @@ namespace Core.Middlewere
                 Console.WriteLine($"Falha ao gravar log no MongoDB: {mongoEx.Message}");
             }
         }
-    }    
+    }
 }

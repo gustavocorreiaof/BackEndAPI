@@ -1,6 +1,6 @@
-﻿using Core.Entities.Base;
+﻿using Core.Common.Entities.Base;
 
-namespace Core.Entities
+namespace Core.Common.Entities
 {
     public class Account : BaseEntity
     {
@@ -9,7 +9,7 @@ namespace Core.Entities
             User = user;
             Balance = balance;
         }
-        public Account(){}
+        public Account() { }
 
         public User User { get; set; }
         public decimal Balance { get; set; }

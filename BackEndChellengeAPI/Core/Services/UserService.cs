@@ -1,7 +1,7 @@
-﻿using Core.Entities;
-using Core.Repository;
+﻿using Core.Common.Entities;
+using Core.Common.Repository;
 
-namespace Core.Services
+namespace Core.Common.Services
 {
     public class UserService
     {

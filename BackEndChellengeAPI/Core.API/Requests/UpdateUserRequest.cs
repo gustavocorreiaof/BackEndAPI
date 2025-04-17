@@ -1,7 +1,7 @@
-﻿using Core.Util.Msgs;
+﻿using Core.Common.Util.Msgs;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Requests
+namespace Core.API.Requests
 {
     public class UpdateUserRequest
     {
