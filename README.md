@@ -14,7 +14,7 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 ## ⚙️ Features
 
 - ✅ Base methods: Create, Update, Delete, and Transactions
-- ✅ Data validation
+- ✅ Data validation with CustomAttributes
 - ✅ Middleware to log exceptions to MongoDB
 - ✅ Send Email for both parts of transaction
 - ✅ JWT implementation for authentication
@@ -22,8 +22,9 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - ✅ Microservice responsible for consuming messages and sending emails
 - 🛠️ Integration tests using NUnit
 - [] Use UnityOfWork
-- [] Use Elastic
+- [] Set culture according to the user's preferences
 - [] Swagger for API documentation
+- [] Migration to .NET 9.0
 
 ## 🚧 Project Status
 

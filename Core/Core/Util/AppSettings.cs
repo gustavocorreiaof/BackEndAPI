@@ -16,6 +16,7 @@ namespace Core.Infrastructure.Util
         public static string SenderName => Configuration["EmailSettings:SenderName"]!;
         public static string SenderPassword => Configuration["EmailSettings:SenderPassword"]!;
         public static string RabbitMQUserName => Configuration["RabbitMQ:Username"]!;
+        public static string RabbitMQHostName => Configuration["RabbitMQ:HostName"]!;
         public static string RabbitMQPassword => Configuration["RabbitMQ:Password"]!;
         public static string RabbitMQQueue => Configuration["RabbitMQ:Queue"]!;
 

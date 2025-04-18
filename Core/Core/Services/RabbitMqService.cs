@@ -13,7 +13,7 @@ namespace Core.Services.Services
         {
             ConnectionFactory factory = new ConnectionFactory()
             {
-                HostName = "localhost",
+                HostName = AppSettings.RabbitMQHostName,
                 UserName = AppSettings.RabbitMQUserName,
                 Password = AppSettings.RabbitMQPassword
             };
