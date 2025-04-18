@@ -3,7 +3,6 @@ using Core.Infrastructure.Util;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace Core.Services.BusinesseRules
 {
