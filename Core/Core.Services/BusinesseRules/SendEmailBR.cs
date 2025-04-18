@@ -3,16 +3,25 @@ using Core.Infrastructure.Events;
 using Core.Infrastructure.Util;
 using System.Net;
 using System.Net.Mail;
+using System.Text.Json;
 
 namespace Core.Services.BusinesseRules
 {
-    public class NotificationBR
+    public class SendEmailBR
     {
-        private readonly string _smtpServer = AppSettings.SmtpServer;
         private readonly int _smtpPort = AppSettings.SmtpPort;
+        private readonly string _smtpServer = AppSettings.SmtpServer;
         private readonly string _senderEmail = AppSettings.SenderEmail;
         private readonly string _senderPassword = AppSettings.SenderPassword;
         private readonly string _senderName = AppSettings.SenderName;
+
+        public void SendMailExecute(string msg)
+        {
+            TransferEventArgs json = JsonSerializer.Deserialize<TransferEventArgs>(msg);
+
+            _ = SendEmailToPayeeAsync(json);
+            _ = SendEmailToPayerAsync(json);
+        }
 
         public async Task<bool> SendEmailToPayeeAsync(TransferEventArgs e)
         {
@@ -72,12 +81,6 @@ namespace Core.Services.BusinesseRules
             {
                 return false;
             }
-        }
-
-        public void SendEmail(object? sender, TransferEventArgs e)
-        {
-            _ = SendEmailToPayeeAsync(e);
-            _ = SendEmailToPayerAsync(e);
         }
     }
 }
