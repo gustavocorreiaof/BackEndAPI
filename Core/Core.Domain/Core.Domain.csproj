@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="RabbitMQ.Client" Version="6.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Msgs\ApiMsg.Designer.cs">
       <AccessModifier>public</AccessModifier>
       <DependentUpon>ApiMsg.resx</DependentUpon>
