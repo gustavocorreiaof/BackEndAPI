@@ -18,8 +18,9 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - ✅ Middleware to log exceptions to MongoDB
 - ✅ Send Email for both parts of transaction
 - ✅ JWT implementation for authentication
+- ✅ Publish Message on RabbitMQ
+- ✅ Microservice responsible for consuming messages and sending emails
 - 🛠️ Integration tests using NUnit
-- [] Publish Message on RabbitMQ
 - [] Use UnityOfWork
 - [] Use Elastic
 - [] Swagger for API documentation
