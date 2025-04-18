@@ -3,6 +3,7 @@ using Core.Infrastructure.Events;
 using Core.Infrastructure.Util;
 using System.Net;
 using System.Net.Mail;
+using System.Text.Json;
 
 namespace Core.Services.BusinesseRules
 {
@@ -13,6 +14,14 @@ namespace Core.Services.BusinesseRules
         private readonly string _senderEmail = AppSettings.SenderEmail;
         private readonly string _senderPassword = AppSettings.SenderPassword;
         private readonly string _senderName = AppSettings.SenderName;
+
+        public void SendMailExecute(string msg)
+        {
+            TransferEventArgs json = JsonSerializer.Deserialize<TransferEventArgs>(msg);
+
+            _ = SendEmailToPayeeAsync(json);
+            _ = SendEmailToPayerAsync(json);
+        }
 
         public async Task<bool> SendEmailToPayeeAsync(TransferEventArgs e)
         {

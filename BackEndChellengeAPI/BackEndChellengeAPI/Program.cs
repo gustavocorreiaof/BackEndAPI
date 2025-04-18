@@ -4,6 +4,7 @@ using Core.Infrastructure.Repository;
 using Core.Infrastructure.Repository.Base;
 using Core.Infrastructure.Util;
 using Core.Services.BusinesseRules;
+using Core.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
@@ -56,8 +57,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-NotificationBR notificacaoService = new NotificationBR();
-TransferBR.TransferCompleted += notificacaoService.SendEmail;
+var rabbitMqService = new RabbitMqService();
+var channel = rabbitMqService.GetChannel();
+var publisher = new MessagePublisherBR(channel);
+
+TransferBR.TransferCompleted += publisher.Publish;
 
 var app = builder.Build();
 

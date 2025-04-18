@@ -1,5 +1,6 @@
 using Core.Domain.Interfaces;
 using Core.Infrastructure.Util;
+using Core.Services.BusinesseRules;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -25,7 +26,8 @@ public class Worker : BackgroundService
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
 
-            _logger.LogInformation("Mensagem recebida: {msg}", message);
+            new SendEmailBR().SendMailExecute(message);
+
         };
 
         _channel.BasicConsume(queue: AppSettings.RabbitMQQueue,
