@@ -14,6 +14,8 @@ namespace Core.Services.BusinesseRules
         {
             VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
 
+            userDTO.Password = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
+
             User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
 
             if (userDTO.UserId == null)
