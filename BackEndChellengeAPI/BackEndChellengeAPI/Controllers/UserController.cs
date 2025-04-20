@@ -33,6 +33,8 @@ namespace BackEndChellengeAPI.Controllers
         {
             UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email, request.UserType, userId: null);
 
+            userDTO.TaxNumber = RemoveSpecialCharacters(userDTO.TaxNumber);
+
             new UserBR().SaveUser(userDTO);
 
             return Ok(ApiMsg.INF001);
@@ -45,6 +47,14 @@ namespace BackEndChellengeAPI.Controllers
             new UserBR().SaveUser(userDTO);
 
             return Ok("");
-        }        
+        }
+
+        private static string RemoveSpecialCharacters(string taxNumber)
+        {
+            if (string.IsNullOrWhiteSpace(taxNumber))
+                return string.Empty;
+
+            return new string(taxNumber.Where(char.IsDigit).ToArray());
+        }
     }
 }
