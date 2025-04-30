@@ -21,14 +21,14 @@ namespace BackEndChellengeAPI.Controllers
             _userService = userService;
         }
 
-        [HttpGet("GetAllUsers")]
+        [HttpGet]
         public IActionResult GetAllUsers()
         {
             List<User> users = UserBR.GetAllUsers();
             return Ok(users);
         }
 
-        [HttpPost("InsertUser")]
+        [HttpPost]
         public IActionResult InsertUser([FromBody] CreateUserRequest request)
         {
             UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email, request.UserType, userId: null);
@@ -40,7 +40,7 @@ namespace BackEndChellengeAPI.Controllers
             return Ok(ApiMsg.INF001);
         }
 
-        [HttpPut("UpdateUser")]
+        [HttpPut]
         public IActionResult UpdateUser([FromBody] UpdateUserRequest request)
         {
             UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, request.NewTaxNumber, request.NewEmail, userType: null, request.UserId);

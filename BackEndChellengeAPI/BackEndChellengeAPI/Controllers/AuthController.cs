@@ -17,7 +17,7 @@ namespace BackEndChellengeAPI.Controllers
             _config = config;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public IActionResult Login()
         {
             var token = GenerateJwtToken("usuario123");
