@@ -1,4 +1,5 @@
 using BackEndChellengeAPI.Requests;
+using BackEndChellengeAPI.Responses;
 using Core.Domain.DTOs;
 using Core.Domain.Entities;
 using Core.Domain.Interfaces;
@@ -36,8 +37,12 @@ namespace BackEndChellengeAPI.Controllers
             userDTO.TaxNumber = RemoveSpecialCharacters(userDTO.TaxNumber);
 
             new UserBR().SaveUser(userDTO);
-
-            return Ok(ApiMsg.INF001);
+            
+            return new JsonResult(new ApiResponse()
+            {
+                Success = true,
+                Message = ApiMsg.INF001
+            });
         }
 
         [HttpPut]
