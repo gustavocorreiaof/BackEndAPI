@@ -36,12 +36,13 @@ namespace BackEndChellengeAPI.Controllers
 
             userDTO.TaxNumber = RemoveSpecialCharacters(userDTO.TaxNumber);
 
-            new UserBR().SaveUser(userDTO);
+            long userId = new UserBR().SaveUser(userDTO);
             
             return new JsonResult(new ApiResponse()
             {
                 Success = true,
-                Message = ApiMsg.INF001
+                Message = ApiMsg.INF001,
+                UserId = userId
             });
         }
 

@@ -10,7 +10,7 @@ namespace Core.Services.BusinesseRules
 {
     public class UserBR : IUserBR
     {
-        public void SaveUser(UserDTO userDTO)
+        public long SaveUser(UserDTO userDTO)
         {
             VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
 
@@ -19,9 +19,9 @@ namespace Core.Services.BusinesseRules
             User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
 
             if (userDTO.UserId == null)
-                new UserRepository().InsertUser(user);
+                 return new UserRepository().InsertUser(user);
             else
-                new UserRepository().UpdateUser(user);
+                 return new UserRepository().UpdateUser(user);
 
         }
 

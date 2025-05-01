@@ -4,6 +4,6 @@ namespace Core.Domain.Interfaces
 {
     public interface IUserBR
     {
-        void SaveUser(UserDTO user);
+        long SaveUser(UserDTO user);
     }
 }

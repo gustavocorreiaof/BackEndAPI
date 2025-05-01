@@ -1,5 +1,6 @@
 ﻿using Core.Domain.Entities;
 using Core.Domain.Enums;
+using Core.Domain.Exceptions;
 using Core.Infrastructure.Repository.Base;
 using System.Data.SqlClient;
 
@@ -67,7 +68,7 @@ public class UserRepository : BaseRepository
         }
     }
 
-    public void InsertUser(User user)
+    public long InsertUser(User user)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -85,11 +86,11 @@ public class UserRepository : BaseRepository
                 command.Parameters.AddWithValue("@paramType", user.Type);
 
                 var result = command.ExecuteScalar();
-                if (result != null)
-                {
-                    int newUserId = Convert.ToInt32(result);
-                    Console.WriteLine($"User successfully inserted with ID: {newUserId}");
-                }
+
+                if (result != null && long.TryParse(result.ToString(), out long newUserId))                
+                    return newUserId;                
+                else
+                    throw new ApiException("Failed to insert user or retrieve identity.");
             }
         }
     }
@@ -127,7 +128,7 @@ public class UserRepository : BaseRepository
         return users;
     }
 
-    public void UpdateUser(User user)
+    public long UpdateUser(User user)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -137,10 +138,15 @@ public class UserRepository : BaseRepository
             {
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                //command.Parameters.AddWithValue("@paramUserId", userId);
-                //command.Parameters.AddWithValue("@paramNewEmail", newEmail);
+                command.Parameters.AddWithValue("@paramUserId", user.Id);
+                command.Parameters.AddWithValue("@paramNewEmail", user.Email);
 
                 var result = command.ExecuteScalar();
+
+                if (result != null && long.TryParse(result.ToString(), out long updatedUserId))
+                    return updatedUserId;
+                else
+                    throw new Exception("Failed to update user or retrieve identity.");
             }
         }
     }
