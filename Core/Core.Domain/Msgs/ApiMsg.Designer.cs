@@ -176,5 +176,14 @@ namespace Core.Domain.Msgs {
                 return ResourceManager.GetString("INF005", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Your user has been successfully updated..
+        /// </summary>
+        public static string INF006 {
+            get {
+                return ResourceManager.GetString("INF006", resourceCulture);
+            }
+        }
     }
 }

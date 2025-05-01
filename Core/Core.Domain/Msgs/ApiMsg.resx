@@ -156,4 +156,7 @@
   <data name="INF005" xml:space="preserve">
     <value>Your transfer in the amount of {0} was successfully sent to {1}.</value>
   </data>
+  <data name="INF006" xml:space="preserve">
+    <value>Your user has been successfully updated.</value>
+  </data>
 </root>

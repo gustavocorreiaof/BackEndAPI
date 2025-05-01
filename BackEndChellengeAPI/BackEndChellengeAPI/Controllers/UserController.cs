@@ -46,7 +46,7 @@ namespace BackEndChellengeAPI.Controllers
             UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, request.NewTaxNumber, request.NewEmail, userType: null, request.UserId);
             new UserBR().SaveUser(userDTO);
 
-            return Ok("");
+            return Ok(ApiMsg.INF006);
         }
 
         private static string RemoveSpecialCharacters(string taxNumber)
