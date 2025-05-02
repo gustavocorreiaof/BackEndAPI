@@ -11,5 +11,8 @@ namespace Core.Infrastructure.Repository.Interfaces
         public User GetByTaxNumber(string userTaxNumber);
         public User GetByEmail(string email);
         public List<User> GetAllUsers();
+        void UpdatePassword(User user);
+        void UpdateEmail(User user);
+        void UpdateName(User user);
     }
 }

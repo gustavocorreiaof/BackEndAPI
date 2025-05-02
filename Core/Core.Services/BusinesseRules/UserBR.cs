@@ -52,7 +52,7 @@ namespace Core.Services.BusinesseRules
 
             user.Name = newName;
 
-            _userRepository.Update(user);
+            _userRepository.UpdateName(user);
         }
 
         public void UpdateEmail(long userId, string newEmail)
@@ -63,7 +63,7 @@ namespace Core.Services.BusinesseRules
 
             user.Email = newEmail;
 
-            _userRepository.Update(user);
+            _userRepository.UpdateEmail(user);
         }
 
         public void UpdatePassword(long userId, string newPassword)
@@ -72,9 +72,9 @@ namespace Core.Services.BusinesseRules
 
             IsValidPassword(newPassword);
 
-            user.Password = newPassword;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
 
-            _userRepository.Update(user);
+            _userRepository.UpdatePassword(user);
         }
 
         private void VerifyIfExistUser(string? taxNumber, string? email, long? userId)
@@ -92,7 +92,7 @@ namespace Core.Services.BusinesseRules
 
         private void IsValidPassword(string password)
         {
-            var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!/%*?&])[A-Za-z\d@$!%*?&]{6,}$";
+            var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$";
 
             if(password == null || Regex.IsMatch(password, passwordRegex))
                 throw new ApiException(ApiMsg.EX010);

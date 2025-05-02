@@ -15,7 +15,7 @@ namespace Core.Domain.Entities
 
         public UserType Type { get; set; }
 
-        public User(long id, string name, string pwd, string cpf, string email, UserType userType)
+        public User(long id, string name, string pwd, string cpf, string email, UserType userType, DateTime creationDate)
         {
             Id = id;
             Name = name;
@@ -23,6 +23,7 @@ namespace Core.Domain.Entities
             TaxNumber = cpf;
             Email = email;
             Type = userType;
+            CreationDate = creationDate;
         }
 
         public User() { }

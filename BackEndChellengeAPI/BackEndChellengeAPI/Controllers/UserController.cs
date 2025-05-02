@@ -54,7 +54,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.DeleteUser(request.UserId);
 
-            return Ok(new { Success = true, ApiMsg.INF006 });
+            return Ok(new { Success = true, Message = ApiMsg.INF007 });
         }
 
         [HttpPatch("UpdateName")]
@@ -62,7 +62,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.UpdateName(request.UserId, request.Value);
 
-            return Ok(new { Success = true, ApiMsg.INF008 });
+            return Ok(new { Success = true, Message = ApiMsg.INF008 });
         }
 
         [HttpPatch("UpdateEmail")]
@@ -78,7 +78,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.UpdatePassword(request.UserId, request.Value);
 
-            return Ok(new { Success = true, ApiMsg.INF009 });
+            return Ok(new { Success = true, Message = ApiMsg.INF009 });
         }
 
         private static string RemoveSpecialCharacters(string taxNumber)

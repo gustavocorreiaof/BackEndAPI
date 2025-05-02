@@ -13,7 +13,7 @@ public class PasswordValidationAttribute : ValidationAttribute
 
         var password = value.ToString();
 
-        var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!/%*?&])[A-Za-z\d@$!%*?&]{6,}$";
+        var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$";
 
         return Regex.IsMatch(password, passwordRegex);
     }

@@ -3,6 +3,7 @@ using Core.Domain.Enums;
 using Core.Domain.Exceptions;
 using Core.Infrastructure.Repository.Base;
 using Core.Infrastructure.Repository.Interfaces;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Core.Infrastructure.Repository;
@@ -96,7 +97,8 @@ public class UserRepository : BaseRepository, IUserRepository
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),
                             reader["Email"].ToString(),
-                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString())
+                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString()),
+                            DateTime.Parse(reader["CreationDate"].ToString())
                         );
                     }
 
@@ -127,7 +129,8 @@ public class UserRepository : BaseRepository, IUserRepository
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),
                             reader["Email"].ToString(),
-                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString())
+                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString()),
+                            DateTime.Parse(reader["CreationDate"].ToString())
                         );
                     }
 
@@ -158,7 +161,8 @@ public class UserRepository : BaseRepository, IUserRepository
                             reader["Password"].ToString(),
                             reader["TaxNumber"].ToString(),
                             reader["Email"].ToString(),
-                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString())
+                            (UserType)Enum.Parse(typeof(UserType), reader["Type"].ToString()),
+                            DateTime.Parse(reader["CreationDate"].ToString())
                         );
                     }
 
@@ -199,5 +203,56 @@ public class UserRepository : BaseRepository, IUserRepository
         }
 
         return users;
+    }
+    
+    public void UpdatePassword(User user)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new SqlCommand("UpdateUserPassword", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@paramUserId", user.Id);
+                command.Parameters.AddWithValue("@paramPassword", user.Password);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void UpdateEmail(User user)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new SqlCommand("UpdateUserEmail", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@paramUserId", user.Id);
+                command.Parameters.AddWithValue("@paramEmail", user.Email);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void UpdateName(User user)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new SqlCommand("UpdateUserName", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@paramUserId", user.Id);
+                command.Parameters.AddWithValue("@paramName", user.Name);
+
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }
