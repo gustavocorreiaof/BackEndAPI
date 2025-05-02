@@ -2,6 +2,7 @@ using BackEndChellengeAPI.Middlewere;
 using Core.Domain.Interfaces;
 using Core.Infrastructure.Repository;
 using Core.Infrastructure.Repository.Base;
+using Core.Infrastructure.Repository.Interfaces;
 using Core.Infrastructure.Util;
 using Core.Services.BusinesseRules;
 using Core.Services.Services;
@@ -22,10 +23,10 @@ builder.Services.AddSingleton<IMongoDatabase>(serviceProvider =>
 
 builder.Services.AddControllers();
 builder.Services.Configure<BaseRepository>(builder.Configuration.GetSection("DatabaseSettings"));
-builder.Services.AddScoped<UserRepository>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); 
+builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserBR, UserBR>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var jwtConfig = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtConfig["SecretKey"];

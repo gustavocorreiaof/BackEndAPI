@@ -133,6 +133,24 @@ namespace Core.Domain.Msgs {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a There is no user with this Id..
+        /// </summary>
+        public static string EX009 {
+            get {
+                return ResourceManager.GetString("EX009", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a New password is invalid..
+        /// </summary>
+        public static string EX010 {
+            get {
+                return ResourceManager.GetString("EX010", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a User successfully created..
         /// </summary>
         public static string INF001 {
@@ -183,6 +201,42 @@ namespace Core.Domain.Msgs {
         public static string INF006 {
             get {
                 return ResourceManager.GetString("INF006", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a User deleted successfully..
+        /// </summary>
+        public static string INF007 {
+            get {
+                return ResourceManager.GetString("INF007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Name updated successfully..
+        /// </summary>
+        public static string INF008 {
+            get {
+                return ResourceManager.GetString("INF008", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Password updated successfully..
+        /// </summary>
+        public static string INF009 {
+            get {
+                return ResourceManager.GetString("INF009", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Email updated successfully..
+        /// </summary>
+        public static string INF010 {
+            get {
+                return ResourceManager.GetString("INF010", resourceCulture);
             }
         }
     }

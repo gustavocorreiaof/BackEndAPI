@@ -113,5 +113,23 @@ namespace Core.Domain.Msgs {
                 return ResourceManager.GetString("ERR006", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The UserId is required..
+        /// </summary>
+        public static string ERR007 {
+            get {
+                return ResourceManager.GetString("ERR007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A propriedade Value deve conter um valor..
+        /// </summary>
+        public static string ERR008 {
+            get {
+                return ResourceManager.GetString("ERR008", resourceCulture);
+            }
+        }
     }
 }

@@ -5,11 +5,20 @@ using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
 using Core.Infrastructure.Mappers;
 using Core.Infrastructure.Repository;
+using Core.Infrastructure.Repository.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Core.Services.BusinesseRules
 {
     public class UserBR : IUserBR
     {
+        public readonly IUserRepository _userRepository;
+
+        public UserBR(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public long SaveUser(UserDTO userDTO)
         {
             VerifyIfExistUser(userDTO.TaxNumber, userDTO.Email, userDTO.UserId);
@@ -19,27 +28,56 @@ namespace Core.Services.BusinesseRules
             User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
 
             if (userDTO.UserId == null)
-                 return new UserRepository().Insert(user);
+                return _userRepository.Insert(user);
             else
-                 return new UserRepository().Update(user);
+                return _userRepository.Update(user);
 
         }
 
         public List<User> GetAllUsers()
         {
-            return new UserRepository().GetAllUsers();
+            return _userRepository.GetAllUsers();
         }
         
         public void DeleteUser(long userId)
         {
-            UserRepository service = new UserRepository();
+            User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
 
-            User user = service.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
-
-            service.Delete(user);
+            _userRepository.Delete(user);
         }
 
-        private void VerifyIfExistUser(string taxNumber, string email, long? userId)
+        public void UpdateName(long userId, string newName)
+        {
+            User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
+
+            user.Name = newName;
+
+            _userRepository.Update(user);
+        }
+
+        public void UpdateEmail(long userId, string newEmail)
+        {
+            User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
+
+            VerifyIfExistUser(taxNumber: null, newEmail, userId);
+
+            user.Email = newEmail;
+
+            _userRepository.Update(user);
+        }
+
+        public void UpdatePassword(long userId, string newPassword)
+        {
+            User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
+
+            IsValidPassword(newPassword);
+
+            user.Password = newPassword;
+
+            _userRepository.Update(user);
+        }
+
+        private void VerifyIfExistUser(string? taxNumber, string? email, long? userId)
         {
             UserRepository service = new UserRepository();
 
@@ -50,6 +88,14 @@ namespace Core.Services.BusinesseRules
             var userByEmail = service.GetByEmail(email);
             if (userByEmail != null && userByEmail.Id != userId)
                 throw new ApiException(ApiMsg.EX003);
+        }
+
+        private void IsValidPassword(string password)
+        {
+            var passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!/%*?&])[A-Za-z\d@$!%*?&]{6,}$";
+
+            if(password == null || Regex.IsMatch(password, passwordRegex))
+                throw new ApiException(ApiMsg.EX010);
         }
     }
 }

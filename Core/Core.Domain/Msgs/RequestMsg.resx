@@ -135,4 +135,10 @@
   <data name="ERR006" xml:space="preserve">
     <value>The provided TaxNumber is invalid.</value>
   </data>
+  <data name="ERR007" xml:space="preserve">
+    <value>The UserId is required.</value>
+  </data>
+  <data name="ERR008" xml:space="preserve">
+    <value>A propriedade Value deve conter um valor.</value>
+  </data>
 </root>

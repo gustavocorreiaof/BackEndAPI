@@ -1,10 +1,9 @@
 using BackEndChellengeAPI.Requests;
-using BackEndChellengeAPI.Responses;
+using BackEndChellengeAPI.Requests.Base;
 using Core.Domain.DTOs;
 using Core.Domain.Entities;
 using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
-using Core.Services.BusinesseRules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,18 +14,18 @@ namespace BackEndChellengeAPI.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IUserBR _userService;
+        private readonly IUserBR _userBR;
 
-        public UserController(IUserBR userService)
+        public UserController(IUserBR userBR)
         {
-            _userService = userService;
+            _userBR = userBR;
         }
 
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            List<User> users = UserBR.GetAllUsers();
-            return Ok(users);
+            List<User> users = _userBR.GetAllUsers();
+            return Ok(new { Success = true, Users = users });
         }
 
         [HttpPost]
@@ -36,23 +35,50 @@ namespace BackEndChellengeAPI.Controllers
 
             userDTO.TaxNumber = RemoveSpecialCharacters(userDTO.TaxNumber);
 
-            long userId = new UserBR().SaveUser(userDTO);
-            
-            return new JsonResult(new ApiResponse()
-            {
-                Success = true,
-                Message = ApiMsg.INF001,
-                UserId = userId
-            });
+            long userId = _userBR.SaveUser(userDTO);
+
+            return Ok(new { Success = true, Message = ApiMsg.INF001, UserId = userId });
         }
 
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UpdateUserRequest request)
         {
             UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, request.NewTaxNumber, request.NewEmail, userType: null, request.UserId);
-            new UserBR().SaveUser(userDTO);
+            long userId = _userBR.SaveUser(userDTO);
 
-            return Ok(ApiMsg.INF006);
+            return Ok(new { Success = true, Message = ApiMsg.INF006, UserId = userId });
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUser([FromBody] BaseRequest request)
+        {
+            _userBR.DeleteUser(request.UserId);
+
+            return Ok(new { Success = true, ApiMsg.INF006 });
+        }
+
+        [HttpPatch("UpdateName")]
+        public IActionResult UpdateName([FromBody] PatchUpdateRequest request)
+        {
+            _userBR.UpdateName(request.UserId, request.Value);
+
+            return Ok(new { Success = true, ApiMsg.INF008 });
+        }
+
+        [HttpPatch("UpdateEmail")]
+        public IActionResult UpdateEmail([FromBody] PatchUpdateRequest request)
+        {
+            _userBR.UpdateEmail(request.UserId, request.Value);
+
+            return Ok(new { Success = true, ApiMsg.INF010 });
+        }
+
+        [HttpPatch("UpdatePassword")]
+        public IActionResult UpdatePassword([FromBody] PatchUpdateRequest request)
+        {
+            _userBR.UpdatePassword(request.UserId, request.Value);
+
+            return Ok(new { Success = true, ApiMsg.INF009 });
         }
 
         private static string RemoveSpecialCharacters(string taxNumber)

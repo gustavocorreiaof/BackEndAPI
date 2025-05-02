@@ -141,6 +141,12 @@
   <data name="EX008" xml:space="preserve">
     <value>The source account does not have sufficient funds for the transaction.</value>
   </data>
+  <data name="EX009" xml:space="preserve">
+    <value>There is no user with this Id.</value>
+  </data>
+  <data name="EX010" xml:space="preserve">
+    <value>New password is invalid.</value>
+  </data>
   <data name="INF001" xml:space="preserve">
     <value>User successfully created.</value>
   </data>
@@ -158,5 +164,17 @@
   </data>
   <data name="INF006" xml:space="preserve">
     <value>Your user has been successfully updated.</value>
+  </data>
+  <data name="INF007" xml:space="preserve">
+    <value>User deleted successfully.</value>
+  </data>
+  <data name="INF008" xml:space="preserve">
+    <value>Name updated successfully.</value>
+  </data>
+  <data name="INF009" xml:space="preserve">
+    <value>Password updated successfully.</value>
+  </data>
+  <data name="INF010" xml:space="preserve">
+    <value>Email updated successfully.</value>
   </data>
 </root>

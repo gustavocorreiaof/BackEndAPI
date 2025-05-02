@@ -2,11 +2,12 @@
 using Core.Domain.Enums;
 using Core.Domain.Exceptions;
 using Core.Infrastructure.Repository.Base;
+using Core.Infrastructure.Repository.Interfaces;
 using System.Data.SqlClient;
 
 namespace Core.Infrastructure.Repository;
 
-public class UserRepository : BaseRepository
+public class UserRepository : BaseRepository, IUserRepository
 {
     public long Insert(User user)
     {
