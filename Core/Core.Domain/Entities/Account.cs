@@ -9,9 +9,12 @@ namespace Core.Domain.Entities
             User = user;
             Balance = balance;
         }
+        
         public Account() { }
-
+        
+        public long UserId { get; set; }
         public User User { get; set; }
+
         public decimal Balance { get; set; }
     }
 }

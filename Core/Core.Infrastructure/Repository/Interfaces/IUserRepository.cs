@@ -4,15 +4,12 @@ namespace Core.Infrastructure.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        public long Insert(User user);
-        public long Update(User user);
-        public void Delete(User user);
-        public User GetById(long userId);
-        public User GetByTaxNumber(string userTaxNumber);
-        public User GetByEmail(string email);
-        public List<User> GetAllUsers();
-        void UpdatePassword(User user);
-        void UpdateEmail(User user);
-        void UpdateName(User user);
+        User GetById(long id);
+        User GetByEmail(string email);
+        User GetByTaxNumber(string email);
+        List<User> GetAllUsers();
+        long Insert(User user);
+        long Update(User user);
+        void Delete(User user);
     }
 }

@@ -28,9 +28,15 @@ namespace Core.Services.BusinesseRules
             User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
 
             if (userDTO.UserId == null)
+            {
+                user.CreationDate = DateTime.Now;
                 return _userRepository.Insert(user);
+            }
             else
+            {
+                user.UpdateDate = DateTime.Now;
                 return _userRepository.Update(user);
+            }
 
         }
 
@@ -52,7 +58,7 @@ namespace Core.Services.BusinesseRules
 
             user.Name = newName;
 
-            _userRepository.UpdateName(user);
+            _userRepository.Update(user);
         }
 
         public void UpdateEmail(long userId, string newEmail)
@@ -63,7 +69,7 @@ namespace Core.Services.BusinesseRules
 
             user.Email = newEmail;
 
-            _userRepository.UpdateEmail(user);
+            _userRepository.Update(user);
         }
 
         public void UpdatePassword(long userId, string newPassword)
@@ -74,18 +80,16 @@ namespace Core.Services.BusinesseRules
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
 
-            _userRepository.UpdatePassword(user);
+            _userRepository.Update(user);
         }
 
         private void VerifyIfExistUser(string? taxNumber, string? email, long? userId)
         {
-            UserRepository service = new UserRepository();
-
-            var userByTax = service.GetByTaxNumber(taxNumber);
+            var userByTax = _userRepository.GetByTaxNumber(taxNumber);
             if (userByTax != null && userByTax.Id != userId)
                 throw new ApiException(ApiMsg.EX002);
 
-            var userByEmail = service.GetByEmail(email);
+            var userByEmail = _userRepository.GetByEmail(email);
             if (userByEmail != null && userByEmail.Id != userId)
                 throw new ApiException(ApiMsg.EX003);
         }

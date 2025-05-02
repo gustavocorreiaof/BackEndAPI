@@ -1,4 +1,5 @@
-﻿using Core.Domain.Msgs;
+﻿using Core.Domain.Enums;
+using Core.Domain.Msgs;
 using System.ComponentModel.DataAnnotations;
 
 namespace BackEndChellengeAPI.Requests.Attributes;
@@ -31,9 +32,9 @@ public class CpfCnpjValidationAttribute : ValidationAttribute
         if (validationContext.ObjectInstance is CreateUserRequest)
         {
             if (document.Length == 11)
-                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 0);
+                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, UserType.CPF);
             else if (document.Length == 14)
-                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, 1);
+                relatedPropertyInfo.SetValue(validationContext.ObjectInstance, UserType.CNPJ);
         }
 
         return ValidationResult.Success;

@@ -5,15 +5,7 @@ namespace Core.Domain.Entities
 {
     public class User : BaseEntity
     {
-        public string Name { get; set; }
-
-        public string Password { get; set; }
-
-        public string TaxNumber { get; set; }
-
-        public string Email { get; set; }
-
-        public UserType Type { get; set; }
+        public User() { }
 
         public User(long id, string name, string pwd, string cpf, string email, UserType userType, DateTime creationDate)
         {
@@ -26,6 +18,16 @@ namespace Core.Domain.Entities
             CreationDate = creationDate;
         }
 
-        public User() { }
+        public string Name { get; set; }
+
+        public string Password { get; set; }
+
+        public string TaxNumber { get; set; }
+
+        public string Email { get; set; }
+
+        public UserType Type { get; set; }
+
+        public virtual Account Account { get; set; }
     }
 }

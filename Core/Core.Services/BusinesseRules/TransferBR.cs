@@ -17,7 +17,7 @@ namespace Core.Services.BusinesseRules
 
         public static async Task PerformTransactionAsync(TransferDTO dto)
         {
-            if (dto.TransferValue <= 0)
+/*            if (dto.TransferValue <= 0)
                 throw new ApiException(ApiMsg.EX001);
 
             User payerUser = new UserRepository().GetByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException(ApiMsg.EX005);
@@ -39,7 +39,7 @@ namespace Core.Services.BusinesseRules
                 Payee = payeeUser,
                 Amount = dto.TransferValue,
                 TransferDate = DateTime.Now
-            });
+            });*/
         }
 
         private static void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
