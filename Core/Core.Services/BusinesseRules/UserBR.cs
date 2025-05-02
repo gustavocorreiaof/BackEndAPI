@@ -19,26 +19,35 @@ namespace Core.Services.BusinesseRules
             User user = (User)new ApiMapper().MapToEntityOrDTO(userDTO);
 
             if (userDTO.UserId == null)
-                 return new UserRepository().InsertUser(user);
+                 return new UserRepository().Insert(user);
             else
-                 return new UserRepository().UpdateUser(user);
+                 return new UserRepository().Update(user);
 
         }
 
-        public static List<User> GetAllUsers()
+        public List<User> GetAllUsers()
         {
             return new UserRepository().GetAllUsers();
         }
-
-        private static void VerifyIfExistUser(string taxNumber, string email, long? userId)
+        
+        public void DeleteUser(long userId)
         {
-            var service = new UserRepository();
+            UserRepository service = new UserRepository();
 
-            var userByTax = service.GetUserByTaxNumber(taxNumber);
+            User user = service.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
+
+            service.Delete(user);
+        }
+
+        private void VerifyIfExistUser(string taxNumber, string email, long? userId)
+        {
+            UserRepository service = new UserRepository();
+
+            var userByTax = service.GetByTaxNumber(taxNumber);
             if (userByTax != null && userByTax.Id != userId)
                 throw new ApiException(ApiMsg.EX002);
 
-            var userByEmail = service.GetUserByEmail(email);
+            var userByEmail = service.GetByEmail(email);
             if (userByEmail != null && userByEmail.Id != userId)
                 throw new ApiException(ApiMsg.EX003);
         }

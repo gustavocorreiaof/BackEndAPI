@@ -20,11 +20,11 @@ namespace Core.Services.BusinesseRules
             if (dto.TransferValue <= 0)
                 throw new ApiException(ApiMsg.EX001);
 
-            User payerUser = new UserRepository().GetUserByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException(ApiMsg.EX005);
+            User payerUser = new UserRepository().GetByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException(ApiMsg.EX005);
 
             ValidateUserCanMakeTransfers(payerUser, dto.TransferValue);
 
-            User payeeUser = new UserRepository().GetUserByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException(ApiMsg.EX006);
+            User payeeUser = new UserRepository().GetByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException(ApiMsg.EX006);
 
             bool isAuthorized = await IsTransferAuthorizedAsync();
 

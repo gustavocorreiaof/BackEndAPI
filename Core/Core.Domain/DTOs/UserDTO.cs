@@ -4,6 +4,8 @@ namespace Core.Domain.DTOs
 {
     public class UserDTO
     {
+        public UserDTO(){}
+
         public UserDTO(string name, string password, string taxNumber, string email, UserType? userType, long? userId)
         {
             Name = name;
