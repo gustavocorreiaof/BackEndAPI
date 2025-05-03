@@ -131,5 +131,14 @@ namespace Core.Domain.Msgs {
                 return ResourceManager.GetString("ERR008", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character..
+        /// </summary>
+        public static string ERR009 {
+            get {
+                return ResourceManager.GetString("ERR009", resourceCulture);
+            }
+        }
     }
 }

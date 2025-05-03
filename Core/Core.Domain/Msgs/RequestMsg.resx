@@ -141,4 +141,7 @@
   <data name="ERR008" xml:space="preserve">
     <value>A propriedade Value deve conter um valor.</value>
   </data>
+  <data name="ERR009" xml:space="preserve">
+    <value>The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character.</value>
+  </data>
 </root>

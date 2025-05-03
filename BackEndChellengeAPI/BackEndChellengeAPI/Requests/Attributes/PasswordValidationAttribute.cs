@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Core.Domain.Msgs;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace BackEndChellengeAPI.Requests.Attributes;
 public class PasswordValidationAttribute : ValidationAttribute
 {
-    public PasswordValidationAttribute() : base("The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character.") { }
+    public PasswordValidationAttribute() : base(RequestMsg.ERR009) { }
 
     public override bool IsValid(object value)
     {
