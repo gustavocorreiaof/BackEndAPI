@@ -4,7 +4,6 @@ using Core.Domain.Exceptions;
 using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
 using Core.Infrastructure.Mappers;
-using Core.Infrastructure.Repository;
 using Core.Infrastructure.Repository.Interfaces;
 using System.Text.RegularExpressions;
 

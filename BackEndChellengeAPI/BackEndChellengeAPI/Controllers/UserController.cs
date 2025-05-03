@@ -1,5 +1,6 @@
 using BackEndChellengeAPI.Requests;
 using BackEndChellengeAPI.Requests.Base;
+using BackEndChellengeAPI.Responses;
 using Core.Domain.DTOs;
 using Core.Domain.Entities;
 using Core.Domain.Interfaces;
@@ -25,7 +26,7 @@ namespace BackEndChellengeAPI.Controllers
         public IActionResult GetAllUsers()
         {
             List<User> users = _userBR.GetAllUsers();
-            return Ok(new { Success = true, Users = users });
+            return Ok(new ApiResponse<List<User>>{ Data = users });
         }
 
         [HttpPost]
@@ -37,7 +38,7 @@ namespace BackEndChellengeAPI.Controllers
 
             long userId = _userBR.SaveUser(userDTO);
 
-            return Ok(new { Success = true, Message = ApiMsg.INF001, UserId = userId });
+            return Ok(new ApiResponse<long> { Message = ApiMsg.INF001, Data = userId });
         }
 
         [HttpPut]
@@ -46,7 +47,7 @@ namespace BackEndChellengeAPI.Controllers
             UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, request.NewTaxNumber, request.NewEmail, userType: null, request.UserId);
             long userId = _userBR.SaveUser(userDTO);
 
-            return Ok(new { Success = true, Message = ApiMsg.INF006, UserId = userId });
+            return Ok(new { Message = ApiMsg.INF006, UserId = userId });
         }
 
         [HttpDelete]
@@ -54,7 +55,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.DeleteUser(request.UserId);
 
-            return Ok(new { Success = true, Message = ApiMsg.INF007 });
+            return Ok(new { Message = ApiMsg.INF007 });
         }
 
         [HttpPatch("UpdateName")]
@@ -62,7 +63,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.UpdateName(request.UserId, request.Value);
 
-            return Ok(new { Success = true, Message = ApiMsg.INF008 });
+            return Ok(new { Message = ApiMsg.INF008 });
         }
 
         [HttpPatch("UpdateEmail")]
@@ -70,7 +71,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.UpdateEmail(request.UserId, request.Value);
 
-            return Ok(new { Success = true, ApiMsg.INF010 });
+            return Ok(new { ApiMsg.INF010 });
         }
 
         [HttpPatch("UpdatePassword")]
@@ -78,7 +79,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             _userBR.UpdatePassword(request.UserId, request.Value);
 
-            return Ok(new { Success = true, Message = ApiMsg.INF009 });
+            return Ok(new { Message = ApiMsg.INF009 });
         }
 
         private static string RemoveSpecialCharacters(string taxNumber)
