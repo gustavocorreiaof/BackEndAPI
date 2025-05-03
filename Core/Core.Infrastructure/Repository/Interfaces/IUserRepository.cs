@@ -6,7 +6,7 @@ namespace Core.Infrastructure.Repository.Interfaces
     {
         User GetById(long id);
         User GetByEmail(string email);
-        User GetByTaxNumber(string email);
+        User GetByTaxNumber(string taxnumber);
         List<User> GetAllUsers();
         long Insert(User user);
         long Update(User user);

@@ -24,6 +24,7 @@ namespace BackEndChellenge.API.IntegrationTests
         private WebApplicationFactory<Program> _factory;
         private HttpClient _client;
         private string token;
+        private const string inserUserUrl = "/User/";
 
         [SetUp]
         public async Task SetUp()
@@ -31,6 +32,7 @@ namespace BackEndChellenge.API.IntegrationTests
             _mockUserRepository = new Mock<IUserRepository>();
             _mockUserBR = new Mock<UserBR>(_mockUserRepository.Object);
             _controller = new UserController(_mockUserBR.Object);
+            
             _factory = new WebApplicationFactory<Program>();
             _client = _factory.CreateClient();
             token = await GetJWTToken();
@@ -48,7 +50,7 @@ namespace BackEndChellenge.API.IntegrationTests
         public async Task GetAllUsers_ReturnsOkResult_WithListOfUsers()
         {
             //Arrange and Act
-            var response = await _client.GetAsync("/User/");
+            var response = await _client.GetAsync(inserUserUrl);
             string responseContent = await response.Content.ReadAsStringAsync();
 
             var apiResponse = JsonSerializer.Deserialize<ApiResponse<List<User>>>(responseContent, new JsonSerializerOptions
@@ -62,25 +64,24 @@ namespace BackEndChellenge.API.IntegrationTests
         }
 
         [Test]
-        public void InsertUser_InvalidTaxNumber_ThrowsApiException()
+        public async Task InsertUser_InvalidTaxNumber_ReturnsBadRequest()
         {
-            // Arrange
-            var mockUser = new User { Id = 1, TaxNumber = "59099742000169" };
-            _mockUserRepository
-                .Setup(repo => repo.GetByTaxNumber("59099742000169"))
-                .Returns(mockUser);
-
-            var request = new CreateUserRequest
+            //Arrange
+            CreateUserRequest request = new()
             {
-                Name = "Gustavo",
-                Email = "gocorreia@email.com",
-                TaxNumber = "59099742000169",
-                Password = "Picole@123"
+                Name = "Exemple",
+                Email = "exemple@mail.com",
+                Password = "password",
+                TaxNumber = "123"
             };
 
-            // Act & Assert
-            var ex = Assert.Throws<ApiException>(() => _controller.InsertUser(request));
-            Assert.That(ex.Message, Is.EqualTo(ApiMsg.EX002));
+            //Act
+            var response = await _client.PostAsJsonAsync(inserUserUrl, request);
+            var errosInResponse = await response.Content.ReadAsStringAsync();
+
+            //Assert
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            Assert.IsTrue(errosInResponse.Contains(RequestMsg.ERR006), "Its expected errons about Taxnumber field but there is no have.");
         }
 
         [Test]
@@ -96,7 +97,7 @@ namespace BackEndChellenge.API.IntegrationTests
             };
 
             //Act
-            var response = await _client.PostAsJsonAsync("/User/", request);
+            var response = await _client.PostAsJsonAsync(inserUserUrl, request);
             var error = await response.Content.ReadAsStringAsync();
 
             //Assert
@@ -117,7 +118,7 @@ namespace BackEndChellenge.API.IntegrationTests
             };
 
             //Act
-            var response = await _client.PostAsJsonAsync("/User/", request);
+            var response = await _client.PostAsJsonAsync(inserUserUrl, request);
             var errosInResponse = await response.Content.ReadAsStringAsync();
 
             //Assert
@@ -138,7 +139,7 @@ namespace BackEndChellenge.API.IntegrationTests
             };
 
             //Act
-            var response = await _client.PostAsJsonAsync("/User/", request);
+            var response = await _client.PostAsJsonAsync(inserUserUrl, request);
             var errosInResponse = await response.Content.ReadAsStringAsync();
 
             //Assert
@@ -147,10 +148,9 @@ namespace BackEndChellenge.API.IntegrationTests
         }
 
         [Test]
-        public async Task InsertUser_WhenPasswordIsInvalid_ReturnsBadRequest()
+        [TestCase("123")]
+        public async Task InsertUser_WhenPasswordIsInvalid_ReturnsBadRequest(string invalidPassword)
         {
-            string invalidPassword = "123";
-
             //Arrange
             CreateUserRequest request = new()
             {
@@ -161,7 +161,7 @@ namespace BackEndChellenge.API.IntegrationTests
             };
 
             //Act
-            var response = await _client.PostAsJsonAsync("/User/", request);
+            var response = await _client.PostAsJsonAsync(inserUserUrl, request);
             var responseErros = await response.Content.ReadAsStringAsync();
 
             //Assert
@@ -170,33 +170,53 @@ namespace BackEndChellenge.API.IntegrationTests
         }
 
         [Test]
-        public async Task InsertUser_WhenTryInserUserWithUsedTaxNumber_ReturnsBadRequest()
+        [TestCase("05815126000138")]
+        public void InsertUser_WhenTryInserUserWithUsedTaxNumber_ThrowException(string usedTaxnumber)
         {
-            //Arrange
+            // Arrange
+            var mockUser = new User { Id = 1, TaxNumber = usedTaxnumber };
+            _mockUserRepository
+                .Setup(repo => repo.GetByTaxNumber(usedTaxnumber))
+                .Returns(mockUser);
 
-            //Act
+            var request = new CreateUserRequest
+            {
+                Name = "Gustavo",
+                Email = "gocorreia@email.com",
+                TaxNumber = usedTaxnumber,
+                Password = "Picole@123"
+            };
 
-            //Assert
+            // Act & Assert
+            var ex = Assert.Throws<ApiException>(() => _controller.InsertUser(request));
+            Assert.That(ex.Message, Is.EqualTo(ApiMsg.EX002));
         }
 
         [Test]
-        public async Task InsertUser_WhenTryInserUserWithUsedEmail_ReturnsBadRequest()
+        [TestCase("miras@gmail.com")]
+        public void InsertUser_WhenTryInserUserWithUsedEmail_ThrowException(string usedEmail)
         {
             //Arrange
+            User user = new User()
+            {
+                Id = 1, Email = usedEmail
+            };
 
-            //Act
+            _mockUserRepository
+                .Setup(service => service
+                .GetByEmail(usedEmail)).Returns(user);
 
-            //Assert
-        }
+            CreateUserRequest request = new ()
+            {
+                Name = "Exemple",
+                Email = usedEmail,
+                Password = "lsdkfLKMJ213@#@#",
+                TaxNumber = "05815126000138"
+            };
 
-        [Test]
-        public async Task xxx()
-        {
-            //Arrange
-
-            //Act
-
-            //Assert
+            // Act & Assert
+            var ex = Assert.Throws<ApiException>(() => _controller.InsertUser(request));
+            Assert.That(ex.Message, Is.EqualTo(ApiMsg.EX003));
         }
 
         private async Task<string> GetJWTToken()
