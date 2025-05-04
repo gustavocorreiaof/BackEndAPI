@@ -280,8 +280,7 @@ namespace BackEndChellenge.API.IntegrationTests
 
             PatchUpdateRequest patchUpdateRequest = new() { Value = newName, UserId = userId};
 
-            var updateResponse = await _client.PatchAsJsonAsync("/User/UpdateName", patchUpdateRequest);
-            var updateRequestContent = await updateResponse.Content.ReadAsStringAsync();
+            await _client.PatchAsJsonAsync("/User/UpdateName", patchUpdateRequest);
 
             var finalResponse = await _client.GetAsync("/User/GetById?id=" + userId);
             var finalContent = await finalResponse.Content.ReadAsStringAsync();
@@ -289,6 +288,54 @@ namespace BackEndChellenge.API.IntegrationTests
 
 
             Assert.That(finalState.Data.Name, Is.EqualTo(newName));
+            Assert.That(initialState.Data.UpdateDate, !Is.EqualTo(finalState.Data.UpdateDate));
+        }
+
+        [Test]
+        public async Task UpdateUserEmail_WhenUpdateUserEmailSuccessfully()
+        {
+            long userId = 5;
+
+            var initialResponse = await _client.GetAsync("/User/GetById?id=" + userId);
+            var initalContent = await initialResponse.Content.ReadAsStringAsync();
+            ApiResponse<User> initialState = JsonSerializer.Deserialize<ApiResponse<User>>(initalContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            string newEmail = "NewEmail@gmail.com";
+
+            PatchUpdateRequest patchUpdateRequest = new() { Value = newEmail, UserId = userId };
+
+            await _client.PatchAsJsonAsync("/User/UpdateEmail", patchUpdateRequest);
+
+            var finalResponse = await _client.GetAsync("/User/GetById?id=" + userId);
+            var finalContent = await finalResponse.Content.ReadAsStringAsync();
+            ApiResponse<User> finalState = JsonSerializer.Deserialize<ApiResponse<User>>(finalContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+
+            Assert.That(finalState.Data.Email, Is.EqualTo(newEmail));
+            Assert.That(initialState.Data.UpdateDate, !Is.EqualTo(finalState.Data.UpdateDate));
+        }
+
+        [Test]
+        public async Task UpdateUserPassword_WhenUpdateUserPasswordSuccessfully()
+        {
+            long userId = 5;
+
+            var initialResponse = await _client.GetAsync("/User/GetById?id=" + userId);
+            var initalContent = await initialResponse.Content.ReadAsStringAsync();
+            ApiResponse<User> initialState = JsonSerializer.Deserialize<ApiResponse<User>>(initalContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            string newPassword = "NewPassword@gmail.com";
+
+            PatchUpdateRequest patchUpdateRequest = new() { Value = newPassword, UserId = userId };
+
+             await _client.PatchAsJsonAsync("/User/UpdatePassword", patchUpdateRequest);
+
+            var finalResponse = await _client.GetAsync("/User/GetById?id=" + userId);
+            var finalContent = await finalResponse.Content.ReadAsStringAsync();
+            ApiResponse<User> finalState = JsonSerializer.Deserialize<ApiResponse<User>>(finalContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+
+            Assert.That(BCrypt.Net.BCrypt.Verify(newPassword, finalState.Data.Password), Is.True);
             Assert.That(initialState.Data.UpdateDate, !Is.EqualTo(finalState.Data.UpdateDate));
         }
 
