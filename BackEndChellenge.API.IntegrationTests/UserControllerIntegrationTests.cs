@@ -2,6 +2,7 @@ using BackEndChellengeAPI.Controllers;
 using BackEndChellengeAPI.Requests;
 using BackEndChellengeAPI.Responses;
 using Core.Domain.Entities;
+using Core.Domain.Enums;
 using Core.Domain.Exceptions;
 using Core.Domain.Msgs;
 using Core.Infrastructure.Repository.Base;
@@ -64,6 +65,20 @@ namespace BackEndChellenge.API.IntegrationTests
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             Assert.That(apiResponse?.Data, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task GetById_ReturnsUser()
+        {
+            //Arrange & Act
+            var response = await _client.GetAsync("/User/GetById?id=" + 5);
+            var content = await response.Content.ReadAsStringAsync();
+
+            ApiResponse<User> apiResponse = JsonSerializer.Deserialize<ApiResponse<User>>(content, new JsonSerializerOptions{PropertyNameCaseInsensitive = true});
+
+            //Assert
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.True(apiResponse?.Data != null);
         }
 
         [Test]
@@ -252,6 +267,31 @@ namespace BackEndChellenge.API.IntegrationTests
             Assert.That(apiResponse.Data.TaxNumber, Is.EqualTo(Util.RemoveSpecialCharacters(newTaxNumber)));
         }
 
+        [Test]
+        public async Task UpdateUserName_WhenUpdateUserNameSuccessfully()
+        {
+            long userId = 5;
+
+            var initialResponse = await _client.GetAsync("/User/GetById?id=" + userId);
+            var initalContent = await initialResponse.Content.ReadAsStringAsync();
+            ApiResponse<User> initialState = JsonSerializer.Deserialize<ApiResponse<User>>(initalContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            string newName = "NewName";
+
+            PatchUpdateRequest patchUpdateRequest = new() { Value = newName, UserId = userId};
+
+            var updateResponse = await _client.PatchAsJsonAsync("/User/UpdateName", patchUpdateRequest);
+            var updateRequestContent = await updateResponse.Content.ReadAsStringAsync();
+
+            var finalResponse = await _client.GetAsync("/User/GetById?id=" + userId);
+            var finalContent = await finalResponse.Content.ReadAsStringAsync();
+            ApiResponse<User> finalState = JsonSerializer.Deserialize<ApiResponse<User>>(finalContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+
+            Assert.That(finalState.Data.Name, Is.EqualTo(newName));
+            Assert.That(initialState.Data.UpdateDate, !Is.EqualTo(finalState.Data.UpdateDate));
+        }
+
         [TearDown]
         public void TearDown()
         {
@@ -272,15 +312,15 @@ namespace BackEndChellenge.API.IntegrationTests
         {
             return new List<User>
             {
-                new User { Id = 1, Name = "Gustavo DEV", Password = "Password123!", TaxNumber = "10041424000158", Email = "gustavocorreiadias.dev2@gmail.com",  CreationDate = new DateTime(2025, 4, 5, 0, 58, 52, 877) },
-                new User { Id = 2, Name = "Gustavo Email Oficial", Password = "Password123!", TaxNumber = "07779288099", Email = "zerokller45@gmail.com",  CreationDate = new DateTime(2025, 4, 5, 0, 59, 5, 197) },
-                new User { Id = 3, Name = "Maria", Password = "senha123", TaxNumber = "11122233344", Email = "maria@email.com",  CreationDate = new DateTime(2025, 4, 6, 19, 12, 41, 573) },
-                new User { Id = 4, Name = "Test", Password = "Password123!", TaxNumber = "62822624000141", Email = "miras@example.com",  CreationDate = new DateTime(2025, 4, 17, 12, 42, 6, 570) },
-                new User { Id = 5, Name = "Alessandro Ranio", Password = "HashiramaYMadara123@", TaxNumber = "95310729000170", Email = "gustavocorreiadias.dev@gmail.com",  CreationDate = new DateTime(2025, 4, 17, 19, 19, 50, 547) },
-                new User { Id = 6, Name = "Ronaldinho", Password = "Biscoitinho@chocolate2025", TaxNumber = "94766715055", Email = "alekseixavier9@gmail.com",  CreationDate = new DateTime(2025, 4, 17, 19, 23, 23, 573) },
-                new User { Id = 7, Name = "Lais", Password = "$2a$11$BDquXP/v7c0wCnT21TIiJuud/BcghrCgd90wsJOroHDsSL7MPsNx6", TaxNumber = "67816443000126", Email = "laiscavalcantedeoliveira@gmail.com",  CreationDate = new DateTime(2025, 4, 30, 23, 21, 52, 490) },
-                new User { Id = 9, Name = "Andrezao", Password = "$2a$11$XzZiPYAIUmf/bh5JieYdf.mPFGcVUO6rMf1NzmfrcIjDxhpnzEAlq", TaxNumber = "05698249000136", Email = "andrefarias389@gmail.com",  CreationDate = new DateTime(2025, 5, 2, 16, 44, 54, 273) },
-                new User { Id = 18, Name = "Gustavo", Password = "$2a$11$UZ0LgyvHhus5aO4ePhTy7.kgKKoV2XfKEoEoKBB8JtrloJo.OdoyC", TaxNumber = "59099742000169", Email = "gocorreia@email.com",  CreationDate = new DateTime(2025, 5, 3, 14, 41, 48, 40) }
+                new User { Id = 1, Name = "Gustavo DEV", Password = "Password123!", TaxNumber = "10041424000158", Email = "gustavocorreiadias.dev2@gmail.com", Type = UserType.CNPJ, CreationDate = new DateTime(2025, 4, 5, 0, 58, 52, 877) },
+                new User { Id = 2, Name = "Gustavo Email Oficial", Password = "Password123!", TaxNumber = "07779288099", Email = "zerokller45@gmail.com", Type = UserType.CPF, CreationDate = new DateTime(2025, 4, 5, 0, 59, 5, 197) },
+                new User { Id = 3, Name = "Maria", Password = "senha123", TaxNumber = "11122233344", Email = "maria@email.com", Type = UserType.CPF, CreationDate = new DateTime(2025, 4, 6, 19, 12, 41, 573) },
+                new User { Id = 4, Name = "Test", Password = "Password123!", TaxNumber = "62822624000141", Email = "miras@example.com", Type = UserType.CNPJ, CreationDate = new DateTime(2025, 4, 17, 12, 42, 6, 570) },
+                new User { Id = 5, Name = "Alessandro Ranio", Password = "HashiramaYMadara123@", TaxNumber = "95310729000170", Email = "gustavocorreiadias.dev@gmail.com", Type = UserType.CNPJ, CreationDate = new DateTime(2025, 4, 17, 19, 19, 50, 547) },
+                new User { Id = 6, Name = "Ronaldinho", Password = "Biscoitinho@chocolate2025", TaxNumber = "94766715055", Email = "alekseixavier9@gmail.com", Type = UserType.CPF, CreationDate = new DateTime(2025, 4, 17, 19, 23, 23, 573) },
+                new User { Id = 7, Name = "Lais", Password = "$2a$11$BDquXP/v7c0wCnT21TIiJuud/BcghrCgd90wsJOroHDsSL7MPsNx6", TaxNumber = "67816443000126", Email = "laiscavalcantedeoliveira@gmail.com", Type = UserType.CNPJ, CreationDate = new DateTime(2025, 4, 30, 23, 21, 52, 490) },
+                new User { Id = 9, Name = "Andrezao", Password = "$2a$11$XzZiPYAIUmf/bh5JieYdf.mPFGcVUO6rMf1NzmfrcIjDxhpnzEAlq", TaxNumber = "05698249000136", Email = "andrefarias389@gmail.com", Type = UserType.CNPJ, CreationDate = new DateTime(2025, 5, 2, 16, 44, 54, 273) },
+                new User { Id = 18, Name = "Gustavo", Password = "$2a$11$UZ0LgyvHhus5aO4ePhTy7.kgKKoV2XfKEoEoKBB8JtrloJo.OdoyC", TaxNumber = "59099742000169", Email = "gocorreia@email.com", Type = UserType.CNPJ, CreationDate = new DateTime(2025, 5, 3, 14, 41, 48, 40) }
             };
         }
     }

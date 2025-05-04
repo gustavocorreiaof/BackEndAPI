@@ -1,6 +1,7 @@
 ﻿using Core.Domain.Entities;
 using Core.Infrastructure.Repository.Base;
 using Core.Infrastructure.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repository;
 
@@ -13,7 +14,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public User GetById(long id) => _context.User.Find(id);
+    public User GetById(long id) => _context.User.AsNoTracking().FirstOrDefault(u => u.Id == id);
 
     public User GetByEmail(string email) =>
         _context.User.FirstOrDefault(u => u.Email == email);

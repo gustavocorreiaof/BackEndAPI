@@ -61,6 +61,7 @@ namespace Core.Services.BusinesseRules
             User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
 
             user.Name = newName;
+            user.UpdateDate = DateTime.Now;
 
             _userRepository.Update(user);
         }
@@ -72,6 +73,7 @@ namespace Core.Services.BusinesseRules
             VerifyIfExistUser(taxNumber: null, newEmail, userId);
 
             user.Email = newEmail;
+            user.UpdateDate = DateTime.Now;
 
             _userRepository.Update(user);
         }
@@ -83,6 +85,7 @@ namespace Core.Services.BusinesseRules
             IsValidPassword(newPassword);
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.UpdateDate = DateTime.Now;
 
             _userRepository.Update(user);
         }
