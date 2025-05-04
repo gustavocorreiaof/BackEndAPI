@@ -8,6 +8,7 @@ namespace Core.Domain.Interfaces
         long SaveUser(UserDTO user);
         void DeleteUser(long userId);
         List<User> GetAllUsers();
+        User GetById(long Id);
         void UpdateName(long userId, string newName);
         void UpdateEmail(long userId, string newEmail);
         void UpdatePassword(long userId, string newPassword);

@@ -5,6 +5,7 @@ using Core.Domain.DTOs;
 using Core.Domain.Entities;
 using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
+using Core.Infrastructure.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,11 +23,18 @@ namespace BackEndChellengeAPI.Controllers
             _userBR = userBR;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
             List<User> users = _userBR.GetAllUsers();
             return Ok(new ApiResponse<List<User>>{ Data = users });
+        }
+
+        [HttpGet("GetById")]
+        public IActionResult GetById([FromQuery] long id)
+        {
+            User user = _userBR.GetById(id);
+            return Ok(new ApiResponse<User> { Data = user });
         }
 
         [HttpPost]
@@ -34,7 +42,7 @@ namespace BackEndChellengeAPI.Controllers
         {
             UserDTO userDTO = new(request.Name, request.Password, request.TaxNumber, request.Email, request.UserType, userId: null);
 
-            userDTO.TaxNumber = RemoveSpecialCharacters(userDTO.TaxNumber);
+            userDTO.TaxNumber = Util.RemoveSpecialCharacters(userDTO.TaxNumber);
 
             long userId = _userBR.SaveUser(userDTO);
 
@@ -44,7 +52,7 @@ namespace BackEndChellengeAPI.Controllers
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UpdateUserRequest request)
         {
-            UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, request.NewTaxNumber, request.NewEmail, userType: null, request.UserId);
+            UserDTO userDTO = new UserDTO(request.NewName, request.NewPassword, Util.RemoveSpecialCharacters(request.NewTaxNumber), request.NewEmail, userType: null, request.UserId);
             long userId = _userBR.SaveUser(userDTO);
 
             return Ok(new { Message = ApiMsg.INF006, UserId = userId });
@@ -80,14 +88,6 @@ namespace BackEndChellengeAPI.Controllers
             _userBR.UpdatePassword(request.UserId, request.Value);
 
             return Ok(new { Message = ApiMsg.INF009 });
-        }
-
-        private static string RemoveSpecialCharacters(string taxNumber)
-        {
-            if (string.IsNullOrWhiteSpace(taxNumber))
-                return string.Empty;
-
-            return new string(taxNumber.Where(char.IsDigit).ToArray());
         }
     }
 }

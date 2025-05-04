@@ -43,6 +43,11 @@ namespace Core.Services.BusinesseRules
         {
             return _userRepository.GetAllUsers();
         }
+
+        public User GetById(long Id)
+        {
+            return _userRepository.GetById(Id);
+        }
         
         public void DeleteUser(long userId)
         {
@@ -84,6 +89,11 @@ namespace Core.Services.BusinesseRules
 
         private void VerifyIfExistUser(string? taxNumber, string? email, long? userId)
         {
+            if (userId != null)
+            {
+                var user = _userRepository.GetById(userId.Value) ?? throw new ApiException(ApiMsg.EX009);
+            }
+
             var userByTax = _userRepository.GetByTaxNumber(taxNumber);
             if (userByTax != null && userByTax.Id != userId)
                 throw new ApiException(ApiMsg.EX002);
@@ -91,6 +101,7 @@ namespace Core.Services.BusinesseRules
             var userByEmail = _userRepository.GetByEmail(email);
             if (userByEmail != null && userByEmail.Id != userId)
                 throw new ApiException(ApiMsg.EX003);
+
         }
 
         private void IsValidPassword(string password)

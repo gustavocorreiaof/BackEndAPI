@@ -13,9 +13,9 @@ namespace Core.Infrastructure.Mappers
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDTO>()
-                    .ForMember(dest => dest.TaxNumber, opt => opt.MapFrom(src => src.TaxNumber));
+                    .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
                 cfg.CreateMap<UserDTO, User>()
-                    .ForMember(dest => dest.TaxNumber, opt => opt.MapFrom(src => src.TaxNumber));
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId.GetValueOrDefault()));
             });
 
             _mapper = config.CreateMapper();

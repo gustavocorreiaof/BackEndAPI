@@ -7,10 +7,10 @@ using Core.Infrastructure.Util;
 using Core.Services.BusinesseRules;
 using Core.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +22,15 @@ builder.Services.AddSingleton<IMongoDatabase>(serviceProvider =>
     return client.GetDatabase(AppSettings.MongoDatabase);
 });
 
-builder.Services.AddControllers(); 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddControllers();
+
+bool isTesting = bool.Parse(builder.Configuration["IsTesting"]);
+
+if(isTesting) 
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("BackEndApi"));
+else
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserBR, UserBR>();
