@@ -6,6 +6,7 @@ using Core.Domain.Msgs;
 using Core.Infrastructure.Events;
 using Core.Infrastructure.Json;
 using Core.Infrastructure.Repository;
+using Core.Infrastructure.Repository.Interfaces;
 using Core.Infrastructure.Util;
 using System.Text.Json;
 
@@ -14,17 +15,24 @@ namespace Core.Services.BusinesseRules
     public class TransferBR
     {
         public static event EventHandler<TransferEventArgs>? TransferCompleted;
+        public readonly IUserRepository _userRepository;
 
-        public static async Task PerformTransactionAsync(TransferDTO dto)
+
+        public TransferBR(IUserRepository userRepository)
         {
-/*            if (dto.TransferValue <= 0)
+            _userRepository = userRepository;
+        }
+
+        public async Task PerformTransactionAsync(TransferDTO dto)
+        {
+            if (dto.TransferValue <= 0)
                 throw new ApiException(ApiMsg.EX001);
 
-            User payerUser = new UserRepository().GetByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException(ApiMsg.EX005);
+            User payerUser = _userRepository.GetByTaxNumber(dto.PayerTaxNumber) ?? throw new ApiException(ApiMsg.EX005);
 
             ValidateUserCanMakeTransfers(payerUser, dto.TransferValue);
 
-            User payeeUser = new UserRepository().GetByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException(ApiMsg.EX006);
+            User payeeUser = _userRepository.GetByTaxNumber(dto.PayeeTaxNumber) ?? throw new ApiException(ApiMsg.EX006);
 
             bool isAuthorized = await IsTransferAuthorizedAsync();
 
@@ -39,7 +47,7 @@ namespace Core.Services.BusinesseRules
                 Payee = payeeUser,
                 Amount = dto.TransferValue,
                 TransferDate = DateTime.Now
-            });*/
+            });
         }
 
         private static void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
