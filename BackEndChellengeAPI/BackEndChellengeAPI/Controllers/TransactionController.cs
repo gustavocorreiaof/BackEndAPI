@@ -1,4 +1,5 @@
 ﻿using BackEndChellengeAPI.Requests;
+using BackEndChellengeAPI.Responses;
 using Core.Domain.DTOs;
 using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
@@ -26,7 +27,7 @@ namespace BackEndChellengeAPI.Controllers
 
             await _transferBR.PerformTransactionAsync(transferDTO);           
 
-            return Ok(ApiMsg.INF002);
+            return Ok(new ApiResponse<int>() { Message = ApiMsg.INF002 });
         }
     }
 }

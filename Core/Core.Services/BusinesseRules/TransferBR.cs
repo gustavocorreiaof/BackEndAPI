@@ -61,9 +61,9 @@ namespace Core.Services.BusinesseRules
             if (fromAccount.Balance < transferTotalValue) throw new ApiException(ApiMsg.EX008);
         }
 
-        private static void OnTransferCompleted(TransferEventArgs e)
+        private void OnTransferCompleted(TransferEventArgs e)
         {
-            TransferCompleted?.Invoke(null, e);
+            TransferCompleted?.Invoke(this, e);
         }
 
         private static async Task<bool> IsTransferAuthorizedAsync()
