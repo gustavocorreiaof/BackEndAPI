@@ -1,80 +1,20 @@
+using BackEndChellengeAPI.Extensions;
 using BackEndChellengeAPI.Middlewere;
-using Core.Domain.Interfaces;
-using Core.Infrastructure.Repository;
-using Core.Infrastructure.Repository.Base;
-using Core.Infrastructure.Repository.Interfaces;
-using Core.Infrastructure.Util;
-using Core.Services.BusinesseRules;
-using Core.Services.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-AppSettings.Init(builder.Configuration);
-
-builder.Services.AddSingleton<IMongoDatabase>(serviceProvider =>
-{
-    var client = new MongoClient(AppSettings.MongoUrl);
-    return client.GetDatabase(AppSettings.MongoDatabase);
-});
-
+builder.Services.ConfigureAppSettings(builder.Configuration);
+builder.Services.ConfigureDatabase(builder.Configuration);
+builder.Services.ConfigureMongoDb();
+builder.Services.ConfigureJwtAuthentication(builder.Configuration);
+builder.Services.ConfigureServices();
 builder.Services.AddControllers();
-
-bool isTesting = bool.Parse(builder.Configuration["IsTesting"]);
-
-if(isTesting) 
-    builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("BackEndApi"));
-else
-    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ITransferBR, TransferBR>();
-builder.Services.AddScoped<IUserBR, UserBR>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-
-var jwtConfig = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtConfig["SecretKey"];
-var issuer = jwtConfig["Issuer"];
-var audience = jwtConfig["Audience"];
-var keyBytes = Encoding.UTF8.GetBytes(secretKey!);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-
-        ValidIssuer = issuer,
-        ValidAudience = audience,
-        IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
-
-        ClockSkew = TimeSpan.FromSeconds(30)
-    };
-});
-
-builder.Services.AddAuthorization();
-
-var rabbitMqService = new RabbitMqService();
-var channel = rabbitMqService.GetChannel();
-var publisher = new MessagePublisherBR(channel);
-
-TransferBR.TransferCompleted += publisher.Publish;
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
@@ -83,12 +23,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
 app.UseAuthentication();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.UseHttpsRedirection();
 app.UseAuthorization();
+
 app.MapControllers();
+
+// RabbitMQ Event Wiring
+app.Services.RegisterRabbitMqTransferEvent();
+
 app.Run();
 
 public partial class Program { }
