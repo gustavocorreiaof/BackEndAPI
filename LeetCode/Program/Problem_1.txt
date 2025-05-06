@@ -1,0 +1,47 @@
+Problem 1 -  Solution
+
+--Versao da main para teste
+
+static void Main()
+{
+    int[] values = { 7 };
+
+    ListNode head = new ListNode() { Val = values[0] };
+    ListNode previous = head;
+
+    for (int index = 1; index < values.Length; index++)
+    {
+        ListNode node = new ListNode() { Val = values[index] };
+        previous.Next = node;
+        previous = node;
+    }
+
+    InsertGaps(head);
+
+    ShowList(head);
+}
+
+public static void ShowList(ListNode head)
+{
+    while (head != null)
+    {
+        Console.Write($"{head.Val} -> ");
+        head = head.Next;
+    }
+}
+
+public static void InsertGaps(ListNode head)
+{
+    while(head.Next != null)
+    {
+        int mdc = (int)BigInteger.GreatestCommonDivisor(head.Val, head.Next.Val);
+
+        ListNode newNode = new ListNode() { Val =  mdc, Next = head.Next };
+
+        ListNode nextIndex = head.Next;
+
+        head.Next = newNode;
+
+        head = nextIndex;
+    }
+}
