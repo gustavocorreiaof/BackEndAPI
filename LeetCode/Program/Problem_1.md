@@ -70,3 +70,7 @@ The greatest common divisor of two numbers is the largest positive integer that 
 ##        head = nextIndex;
 ##    }
 ## }
+
+## Novidade Utilizada?
+
+Biblioteca System.Numerics para utilizar o método GreatestCommonDivisor e obter o maximo divisor comum de dois numeros
