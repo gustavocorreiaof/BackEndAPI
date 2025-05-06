@@ -1,39 +1,18 @@
 ﻿using Core.Domain.Entities;
 using Core.Infrastructure.Repository.Base;
-using System.Data.SqlClient;
+using Core.Infrastructure.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repository;
 
-public class AccountRepository : BaseRepository
+public class AccountRepository : IAccountRepository
 {
-    public Account GetAccountByUserId(long userId)
+    private readonly AppDbContext _context;
+
+    public AccountRepository(AppDbContext context)
     {
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            connection.Open();
-
-            using (var command = new SqlCommand("GetAccountByUserId", connection))
-            {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@paramUserId", userId);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        var account = new Account
-                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("AccountId")),
-                            User = new User() { Id = reader.GetInt32(reader.GetOrdinal("UserId")) },
-                            Balance = reader.GetDecimal(reader.GetOrdinal("Balance")),
-                            CreationDate = reader.GetDateTime(reader.GetOrdinal("AccountCreationDate"))
-                        };
-
-                        return account;
-                    }
-                    return null;
-                }
-            }
-        }
+        _context = context;
     }
+
+    public Account GetAccountByUserId(long userId) => _context.Account.AsNoTracking().FirstOrDefault(a => a.UserId == userId);
 }

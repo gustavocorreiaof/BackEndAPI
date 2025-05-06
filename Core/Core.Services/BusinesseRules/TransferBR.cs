@@ -2,6 +2,7 @@
 using Core.Domain.Entities;
 using Core.Domain.Enums;
 using Core.Domain.Exceptions;
+using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
 using Core.Infrastructure.Events;
 using Core.Infrastructure.Json;
@@ -12,15 +13,16 @@ using System.Text.Json;
 
 namespace Core.Services.BusinesseRules
 {
-    public class TransferBR
+    public class TransferBR : ITransferBR
     {
         public static event EventHandler<TransferEventArgs>? TransferCompleted;
         public readonly IUserRepository _userRepository;
+        public readonly IAccountRepository _accountRepository;
 
-
-        public TransferBR(IUserRepository userRepository)
+        public TransferBR(IUserRepository userRepository, IAccountRepository accountRepository)
         {
             _userRepository = userRepository;
+            _accountRepository = accountRepository;
         }
 
         public async Task PerformTransactionAsync(TransferDTO dto)
@@ -50,11 +52,11 @@ namespace Core.Services.BusinesseRules
             });
         }
 
-        private static void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
+        private  void ValidateUserCanMakeTransfers(User user, decimal transferTotalValue)
         {
             if (user.Type == UserType.CNPJ) throw new ApiException(ApiMsg.EX007);
 
-            Account fromAccount = new AccountRepository().GetAccountByUserId(user.Id);
+            Account fromAccount = _accountRepository.GetAccountByUserId(user.Id);
 
             if (fromAccount.Balance < transferTotalValue) throw new ApiException(ApiMsg.EX008);
         }

@@ -7,7 +7,7 @@ namespace Core.Infrastructure.Repository.Base
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){}
         public DbSet<User> User { get; set; }
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Account> Account { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -33,8 +33,10 @@ else
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITransferBR, TransferBR>();
 builder.Services.AddScoped<IUserBR, UserBR>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 var jwtConfig = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtConfig["SecretKey"];
