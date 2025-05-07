@@ -11,7 +11,7 @@ namespace BackEndChellengeAPI.Extensions
             var channel = rabbitService.GetChannel();
             var publisher = new MessagePublisherBR(channel);
 
-            TransferBR.TransferCompleted += publisher.Publish;
+            TransactionBR.TransferCompleted += publisher.Publish;
         }
     }
 }

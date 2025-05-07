@@ -81,7 +81,7 @@ namespace BackEndChellengeAPI.Extensions
 
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            services.AddScoped<ITransferBR, TransferBR>();
+            services.AddScoped<ITransactionBR, TransactionBR>();
             services.AddScoped<IUserBR, UserBR>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();

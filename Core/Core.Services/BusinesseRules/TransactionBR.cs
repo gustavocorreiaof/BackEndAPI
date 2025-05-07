@@ -13,13 +13,13 @@ using System.Text.Json;
 
 namespace Core.Services.BusinesseRules
 {
-    public class TransferBR : ITransferBR
+    public class TransactionBR : ITransactionBR
     {
         public static event EventHandler<TransferEventArgs>? TransferCompleted;
         public readonly IUserRepository _userRepository;
         public readonly IAccountRepository _accountRepository;
 
-        public TransferBR(IUserRepository userRepository, IAccountRepository accountRepository)
+        public TransactionBR(IUserRepository userRepository, IAccountRepository accountRepository)
         {
             _userRepository = userRepository;
             _accountRepository = accountRepository;
@@ -86,6 +86,11 @@ namespace Core.Services.BusinesseRules
             {
                 return false;
             }
+        }
+
+        public List<Transaction> GetTransactionsByUserId(string userId, DateTime? startDate, DateTime? endDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }
