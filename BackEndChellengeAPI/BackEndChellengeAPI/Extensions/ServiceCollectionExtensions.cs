@@ -85,6 +85,7 @@ namespace BackEndChellengeAPI.Extensions
             services.AddScoped<IUserBR, UserBR>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
             return services;
         }
     }

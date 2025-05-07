@@ -5,9 +5,10 @@ namespace Core.Infrastructure.Repository.Base
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){}
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<User> User { get; set; }
         public DbSet<Account> Account { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -16,6 +17,8 @@ namespace Core.Infrastructure.Repository.Base
                 .WithOne(a => a.User)
                 .HasForeignKey<Account>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Transaction>().ToTable("Transaction");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BackEndChellengeAPI.Requests;
 using BackEndChellengeAPI.Responses;
 using Core.Domain.DTOs;
+using Core.Domain.Entities;
 using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
 using Microsoft.AspNetCore.Authorization;
@@ -13,9 +14,9 @@ namespace BackEndChellengeAPI.Controllers
     [Authorize]
     public class TransactionController : ControllerBase
     {
-        public readonly ITransferBR _transferBR;
+        public readonly ITransactionBR _transferBR;
 
-        public TransactionController(ITransferBR transferBR)
+        public TransactionController(ITransactionBR transferBR)
         {
             _transferBR = transferBR;
         }
@@ -28,6 +29,17 @@ namespace BackEndChellengeAPI.Controllers
             await _transferBR.PerformTransactionAsync(transferDTO);           
 
             return Ok(new ApiResponse<int>() { Message = ApiMsg.INF002 });
+        }
+
+        [HttpGet("GetTransactionsByUserId")]
+        public IActionResult GetTransactionsByUserId([FromQuery] long userId, [FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null)
+        {
+            List<Transaction> transactions = _transferBR.GetTransactionsByUserId(userId, startDate, endDate);
+
+            if (transactions == null || !transactions.Any())
+                return NotFound(new ApiResponse<string>() { Message = ApiMsg.INF012 });
+
+            return Ok(new ApiResponse<List<Transaction>>() { Message = string.Format(ApiMsg.INF013, userId), Data = transactions });
         }
     }
 }

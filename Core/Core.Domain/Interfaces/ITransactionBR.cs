@@ -5,7 +5,7 @@ namespace Core.Domain.Interfaces
 {
     public interface ITransactionBR
     {
-        List<Transaction> GetTransactionsByUserId(string userId, DateTime? startDate, DateTime? endDate);
+        List<Transaction> GetTransactionsByUserId(long userId, DateTime? startDate, DateTime? endDate);
         Task PerformTransactionAsync(TransferDTO dto);
     }
 }

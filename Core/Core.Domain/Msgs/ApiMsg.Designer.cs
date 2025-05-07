@@ -248,5 +248,23 @@ namespace Core.Domain.Msgs {
                 return ResourceManager.GetString("INF011", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a No transactions found for the specified filters..
+        /// </summary>
+        public static string INF012 {
+            get {
+                return ResourceManager.GetString("INF012", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a User {0}&apos;s transactions.
+        /// </summary>
+        public static string INF013 {
+            get {
+                return ResourceManager.GetString("INF013", resourceCulture);
+            }
+        }
     }
 }

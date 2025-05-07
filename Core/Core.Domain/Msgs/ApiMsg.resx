@@ -180,4 +180,10 @@
   <data name="INF011" xml:space="preserve">
     <value>Balance retrieved successfully.</value>
   </data>
+  <data name="INF012" xml:space="preserve">
+    <value>No transactions found for the specified filters.</value>
+  </data>
+  <data name="INF013" xml:space="preserve">
+    <value>User {0}'s transactions</value>
+  </data>
 </root>

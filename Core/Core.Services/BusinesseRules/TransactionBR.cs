@@ -18,11 +18,13 @@ namespace Core.Services.BusinesseRules
         public static event EventHandler<TransferEventArgs>? TransferCompleted;
         public readonly IUserRepository _userRepository;
         public readonly IAccountRepository _accountRepository;
+        public readonly ITransactionRepository _transactionRepository;
 
-        public TransactionBR(IUserRepository userRepository, IAccountRepository accountRepository)
+        public TransactionBR(IUserRepository userRepository, IAccountRepository accountRepository, ITransactionRepository transactionRepository)
         {
             _userRepository = userRepository;
             _accountRepository = accountRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public async Task PerformTransactionAsync(TransferDTO dto)
@@ -41,7 +43,7 @@ namespace Core.Services.BusinesseRules
             if (!isAuthorized)
                 throw new ApiException(ApiMsg.EX004);
 
-            new TransactionRepository().PerformTransaction(payerUser, payeeUser, dto.TransferValue);
+            _transactionRepository.PerformTransaction(payerUser, payeeUser, dto.TransferValue);
 
             OnTransferCompleted(new TransferEventArgs
             {
@@ -88,9 +90,9 @@ namespace Core.Services.BusinesseRules
             }
         }
 
-        public List<Transaction> GetTransactionsByUserId(string userId, DateTime? startDate, DateTime? endDate)
+        public List<Transaction> GetTransactionsByUserId(long userId, DateTime? startDate, DateTime? endDate)
         {
-            throw new NotImplementedException();
+            return _transactionRepository.GetTransactionsByUserId(userId, startDate, endDate);
         }
     }
 }
