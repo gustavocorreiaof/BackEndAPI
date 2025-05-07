@@ -47,4 +47,18 @@ public class UserRepository : IUserRepository
         _context.User.Remove(user);
         _context.SaveChanges(); 
     }
+
+    public decimal GetUserBalance(long userId)
+    {
+        var balance = _context.User
+            .Join(_context.Account,
+                  user => user.Id,
+                  account => account.UserId,
+                  (user, account) => new { user.Id, account.Balance })
+            .Where(x => x.Id == userId)
+            .Select(x => x.Balance)
+            .FirstOrDefault();
+
+        return balance;
+    }
 }

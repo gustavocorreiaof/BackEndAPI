@@ -27,7 +27,7 @@ namespace BackEndChellengeAPI.Controllers
         public IActionResult GetAllUsers()
         {
             List<User> users = _userBR.GetAllUsers();
-            return Ok(new ApiResponse<List<User>>{ Data = users });
+            return Ok(new ApiResponse<List<User>> { Data = users });
         }
 
         [HttpGet("GetById")]
@@ -88,6 +88,18 @@ namespace BackEndChellengeAPI.Controllers
             _userBR.UpdatePassword(request.UserId, request.Value);
 
             return Ok(new { Message = ApiMsg.INF009 });
+        }
+
+        [HttpGet("GetUserBalance")]
+        public IActionResult GetUserBalance([FromQuery] long userId)
+        {
+            decimal userBalance = _userBR.GetUserBalance(userId);
+
+            return Ok(new ApiResponse<decimal>()
+            {
+                Message = ApiMsg.INF011,
+                Data = userBalance
+            });
         }
     }
 }

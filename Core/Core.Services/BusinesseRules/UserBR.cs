@@ -114,6 +114,13 @@ namespace Core.Services.BusinesseRules
             if(password == null || Regex.IsMatch(password, passwordRegex))
                 throw new ApiException(ApiMsg.EX010);
         }
+
+        public decimal GetUserBalance(long userId)
+        {
+            User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
+
+            return _userRepository.GetUserBalance(user.Id);
+        }
     }
 }
 

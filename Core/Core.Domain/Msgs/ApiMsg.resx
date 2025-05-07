@@ -177,4 +177,7 @@
   <data name="INF010" xml:space="preserve">
     <value>Email updated successfully.</value>
   </data>
+  <data name="INF011" xml:space="preserve">
+    <value>Balance retrieved successfully.</value>
+  </data>
 </root>
