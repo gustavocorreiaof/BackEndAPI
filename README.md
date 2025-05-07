@@ -10,6 +10,7 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - MongoDB
 - RESTful API
 - RabbitMQ
+- Microservices
   
 ## ⚙️ Features
 
@@ -20,8 +21,7 @@ This API is a self-imposed challenge to apply all the knowledge I’ve developed
 - ✅ JWT implementation for authentication
 - ✅ Publish Message on RabbitMQ
 - ✅ Microservice responsible for consuming messages and sending emails
-- 🛠️ Integration tests using NUnit
-- [] Use UnityOfWork
+- ✅ Integration tests using NUnit
 - [] Set culture according to the user's preferences
 - [] Swagger for API documentation
 - [] Migration to .NET 9.0
