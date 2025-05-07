@@ -140,5 +140,14 @@ namespace Core.Domain.Msgs {
                 return ResourceManager.GetString("ERR009", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The UserName field must be informed..
+        /// </summary>
+        public static string ERR010 {
+            get {
+                return ResourceManager.GetString("ERR010", resourceCulture);
+            }
+        }
     }
 }

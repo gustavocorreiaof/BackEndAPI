@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BackEndChellengeAPI.Requests;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,9 +19,9 @@ namespace BackEndChellengeAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login()
+        public IActionResult Login([FromBody] CreateTokenRequest request)
         {
-            var token = GenerateJwtToken("usuario123");
+            var token = GenerateJwtToken(request.UserName);
             return Ok(new { token });
         }
 

@@ -144,4 +144,7 @@
   <data name="ERR009" xml:space="preserve">
     <value>The password must contain at least 6 characters, including uppercase and lowercase letters, numbers, and a special character.</value>
   </data>
+  <data name="ERR010" xml:space="preserve">
+    <value>The UserName field must be informed.</value>
+  </data>
 </root>
