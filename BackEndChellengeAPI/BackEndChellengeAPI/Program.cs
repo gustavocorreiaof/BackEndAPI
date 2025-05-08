@@ -29,7 +29,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // RabbitMQ Event Wiring
-app.Services.RegisterRabbitMqTransferEvent();
+//app.Services.RegisterRabbitMqTransferEvent();
 
 app.Run();
 

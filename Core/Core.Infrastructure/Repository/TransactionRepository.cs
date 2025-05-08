@@ -23,13 +23,19 @@ public class TransactionRepository : ITransactionRepository
         //NOTE: Eu poderia ter feito usando o LINQ assim como nos outros repositories porem ontem eu estava estudando
         //Um curso de topicos avançados e um dos pontos era a consulta feita dessa forma e entao eu quis tentar usar isso
 
+        if (startDate.HasValue && startDate.Value.Kind == DateTimeKind.Unspecified)
+            startDate = DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc);
+
+        if (endDate.HasValue && endDate.Value.Kind == DateTimeKind.Unspecified)
+            endDate = DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc);
+
         var query = from t in _context.Transaction 
                     where 
                         (t.PayerId == userId)
                         && (startDate == null || t.TransferDate > startDate)
                         && (endDate == null || t.TransferDate < endDate) select t;
 
-        return query.ToList();
+        return query?.ToList();
     }
 
     public void PerformTransaction(User payerId, User payeeId, decimal transferValue)
