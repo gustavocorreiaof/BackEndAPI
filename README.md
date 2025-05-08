@@ -1,31 +1,6 @@
-# 🚀 BackEnd Challenge API
+Para o teste da API é apenas necessario clonar o repositório, crie um banco de dados chamado 'BackEndChallenge' no postgres, e rode o arquivo ini.sql que está no diretorio backendapi/postgres/initsql.
+Caso queira verificar a execução dos testes de integração e unitarios basta virar a chave IsTesting no appsettings para true e será usado o banco InMemory para os testes.
 
-This API is a self-imposed challenge to apply all the knowledge I’ve developed over the years, as well as the new skills I’m currently learning through courses.
+Caso queira a collection com todas as request ja prontas, segue o link: https://.postman.co/workspace/My-Workspace~2ed563d6-bf0e-4526-8e25-afe7ec8bc955/folder/42511742-dc0c3586-2739-49cf-ac9e-3ec7d30da880?action=share&creator=42511742&ctx=documentation&active-environment=42511742-b3547aec-1c00-43ed-901f-c2acfd8517d7
 
-## 📚 Tech Stack
-
-- .NET / C#
-- Entity Framework
-- SQL Server
-- MongoDB
-- RESTful API
-- RabbitMQ
-- Microservices
-  
-## ⚙️ Features
-
-- ✅ Base methods: Create, Update, Delete, and Transactions
-- ✅ Data validation with CustomAttributes
-- ✅ Middleware to log exceptions to MongoDB
-- ✅ Send Email for both parts of transaction
-- ✅ JWT implementation for authentication
-- ✅ Publish Message on RabbitMQ
-- ✅ Microservice responsible for consuming messages and sending emails
-- ✅ Integration tests using NUnit
-- [] Set culture according to the user's preferences
-- [] Swagger for API documentation
-- [] Migration to .NET 9.0
-
-## 🚧 Project Status
-
-This project is under development. Feel free to check the code, open issues, or suggest improvements!
+Ha mais do que foi pedido no desafio no repositório caso queira avaliar.
