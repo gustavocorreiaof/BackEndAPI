@@ -40,7 +40,7 @@ namespace BackEndChellengeAPI.Extensions
                 if (isTesting)
                     options.UseInMemoryDatabase("BackEndApi");
                 else
-                    options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                    options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
 
             return services;

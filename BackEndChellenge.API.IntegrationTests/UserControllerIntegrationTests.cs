@@ -348,7 +348,9 @@ namespace BackEndChellenge.API.IntegrationTests
 
         private async Task<string> GetJWTToken()
         {
-            var response = await _client.PostAsync("/api/Auth", null);
+            CreateTokenRequest request = new CreateTokenRequest() { UserName = "Teste" };
+
+            var response = await _client.PostAsJsonAsync("/api/Auth", request);
 
             var rawJson = await response.Content.ReadAsStringAsync();
             var json = JsonDocument.Parse(rawJson);
