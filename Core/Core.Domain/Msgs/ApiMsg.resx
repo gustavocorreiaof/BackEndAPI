@@ -192,4 +192,7 @@
   <data name="INF013" xml:space="preserve">
     <value>User {0}'s transactions</value>
   </data>
+  <data name="INF014" xml:space="preserve">
+    <value>Balance added successfully.</value>
+  </data>
 </root>

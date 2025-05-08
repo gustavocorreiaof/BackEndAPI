@@ -2,7 +2,8 @@
 using Core.Infrastructure.Repository.Base;
 using Core.Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
+using Npgsql;
+using System.Data;
 
 namespace Core.Infrastructure.Repository;
 
@@ -38,20 +39,20 @@ public class TransactionRepository : ITransactionRepository
         //a stored procedure pois consigo controlar melhor sua performace e o tratamento de rollback em caso de erros.
         //Poderia ter sido feito com unity of work também caso desejasse controlar as ações pelo .NET.
 
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
 
-            using (var command = new SqlCommand("PerformTransaction", connection))
+            using (var command = new NpgsqlCommand("CALL \"PerformTransaction\"(@payerId, @payeeId, @transferValue, @transferDate)", connection))
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandType = CommandType.Text;
 
-                command.Parameters.AddWithValue("@paramPayerId", payerId.Id);
-                command.Parameters.AddWithValue("@paramPayeeId", payeeId.Id);
-                command.Parameters.AddWithValue("@paramTransferValue", transferValue);
-                command.Parameters.AddWithValue("@paramTransferDate", DateTime.Now);
+                command.Parameters.AddWithValue("payerId", payerId.Id);
+                command.Parameters.AddWithValue("payeeId", payeeId.Id);
+                command.Parameters.AddWithValue("transferValue", transferValue);
+                command.Parameters.AddWithValue("TransferDate", DateTime.UtcNow);
 
-                var result = command.ExecuteScalar();
+                command.ExecuteNonQuery(); 
             }
         }
     }

@@ -40,8 +40,9 @@ namespace Core.Services.BusinesseRules
 
             bool isAuthorized = await IsTransferAuthorizedAsync();
 
-            if (!isAuthorized)
-                throw new ApiException(ApiMsg.EX004);
+            //NOTE: isso é estudo imaginando um possivel endpoint de autorização
+            //if (!isAuthorized)
+            //    throw new ApiException(ApiMsg.EX004);
 
             _transactionRepository.PerformTransaction(payerUser, payeeUser, dto.TransferValue);
 

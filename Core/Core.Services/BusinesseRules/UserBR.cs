@@ -12,10 +12,12 @@ namespace Core.Services.BusinesseRules
     public class UserBR : IUserBR
     {
         public readonly IUserRepository _userRepository;
+        public readonly IAccountRepository _accountRepository;
 
-        public UserBR(IUserRepository userRepository)
+        public UserBR(IUserRepository userRepository , IAccountRepository accountRepository)
         {
             _userRepository = userRepository;
+            _accountRepository = accountRepository;
         }
 
         public long SaveUser(UserDTO userDTO)
@@ -29,14 +31,17 @@ namespace Core.Services.BusinesseRules
             if (userDTO.UserId == null)
             {
                 user.CreationDate = DateTime.Now;
-                return _userRepository.Insert(user);
+                long userId = _userRepository.Insert(user);
+
+                _accountRepository.InsertAccount(user);
+
+                return userId;
             }
             else
             {
                 user.UpdateDate = DateTime.Now;
                 return _userRepository.Update(user);
             }
-
         }
 
         public List<User> GetAllUsers()

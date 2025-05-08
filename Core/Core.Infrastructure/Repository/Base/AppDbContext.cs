@@ -1,4 +1,5 @@
 ﻿using Core.Domain.Entities;
+using Core.Infrastructure.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repository.Base
@@ -19,6 +20,22 @@ namespace Core.Infrastructure.Repository.Base
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Transaction>().ToTable("Transaction");
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.CreationDate)
+                .HasConversion(UtcDateTimeConversions.NonNullable);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.UpdateDate)
+                .HasConversion(UtcDateTimeConversions.Nullable);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.CreationDate)
+                .HasConversion(UtcDateTimeConversions.NonNullable);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.UpdateDate)
+                .HasConversion(UtcDateTimeConversions.Nullable);
         }
     }
 }

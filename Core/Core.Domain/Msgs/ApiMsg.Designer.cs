@@ -284,5 +284,14 @@ namespace Core.Domain.Msgs {
                 return ResourceManager.GetString("INF013", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Balance added successfully..
+        /// </summary>
+        public static string INF014 {
+            get {
+                return ResourceManager.GetString("INF014", resourceCulture);
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using BackEndChellengeAPI.Requests.Base;
 using BackEndChellengeAPI.Responses;
 using Core.Domain.DTOs;
 using Core.Domain.Entities;
+using Core.Domain.Exceptions;
 using Core.Domain.Interfaces;
 using Core.Domain.Msgs;
 using Core.Infrastructure.Util;
@@ -88,6 +89,17 @@ namespace BackEndChellengeAPI.Controllers
             _userBR.UpdatePassword(request.UserId, request.Value);
 
             return Ok(new { Message = ApiMsg.INF009 });
+        }
+
+        [HttpPatch("AddBalance")]
+        public IActionResult AddBalance([FromBody] PatchUpdateRequest request)
+        {
+            if (!decimal.TryParse(request.Value, out decimal valueToBeAdded))
+                throw new ApiException(ApiMsg.EX011);
+
+            _userBR.AddBalance(request.UserId, valueToBeAdded);
+
+            return Ok(new { Message = ApiMsg.INF014 });
         }
 
         [HttpGet("GetUserBalance")]
