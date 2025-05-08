@@ -24,6 +24,7 @@ namespace BackEndChellenge.API.IntegrationTests
     {
         private Mock<UserBR> _mockUserBR;
         private Mock<IUserRepository> _mockUserRepository;
+        public  Mock<IAccountRepository> _accountRepository;
         private UserController _controller;
         private WebApplicationFactory<Program> _factory;
         private HttpClient _client;
@@ -34,7 +35,8 @@ namespace BackEndChellenge.API.IntegrationTests
         public async Task SetUp()
         {
             _mockUserRepository = new Mock<IUserRepository>();
-            _mockUserBR = new Mock<UserBR>(_mockUserRepository.Object);
+            _accountRepository = new Mock<IAccountRepository>();
+            _mockUserBR = new Mock<UserBR>(_mockUserRepository.Object, _accountRepository.Object);
             _controller = new UserController(_mockUserBR.Object);
 
             _factory = new WebApplicationFactory<Program>();
