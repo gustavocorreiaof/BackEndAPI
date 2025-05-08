@@ -13,5 +13,6 @@ namespace Core.Domain.Interfaces
         void UpdateEmail(long userId, string newEmail);
         void UpdatePassword(long userId, string newPassword);
         decimal GetUserBalance(long userId);
+        void AddBalance(long userId, decimal value);
     }
 }

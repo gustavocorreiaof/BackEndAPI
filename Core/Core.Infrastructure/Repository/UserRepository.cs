@@ -1,4 +1,6 @@
 ﻿using Core.Domain.Entities;
+using Core.Domain.Exceptions;
+using Core.Domain.Msgs;
 using Core.Infrastructure.Repository.Base;
 using Core.Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +32,7 @@ public class UserRepository : IUserRepository
     {
         _context.User.Add(user);
         _context.SaveChanges();
-        
+
         return user.Id;
     }
 
@@ -38,14 +40,14 @@ public class UserRepository : IUserRepository
     {
         _context.User.Update(user);
         _context.SaveChanges();
-        
+
         return user.Id;
     }
 
     public void Delete(User user)
     {
         _context.User.Remove(user);
-        _context.SaveChanges(); 
+        _context.SaveChanges();
     }
 
     public decimal GetUserBalance(long userId)
@@ -60,5 +62,18 @@ public class UserRepository : IUserRepository
             .FirstOrDefault();
 
         return balance;
+    }
+
+    public void AddBalance(long id, decimal value)
+    {
+        var account = _context.Account.FirstOrDefault(a => a.UserId == id);
+
+        if (account == null)
+            throw new ApiException(ApiMsg.EX012);
+        else
+        {
+            account.Balance += value;
+            _context.SaveChanges();
+        }
     }
 }

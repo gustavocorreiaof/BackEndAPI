@@ -147,6 +147,12 @@
   <data name="EX010" xml:space="preserve">
     <value>New password is invalid.</value>
   </data>
+  <data name="EX011" xml:space="preserve">
+    <value>Invalid value provided for balance update.</value>
+  </data>
+  <data name="EX012" xml:space="preserve">
+    <value>Account not found.</value>
+  </data>
   <data name="INF001" xml:space="preserve">
     <value>User successfully created.</value>
   </data>

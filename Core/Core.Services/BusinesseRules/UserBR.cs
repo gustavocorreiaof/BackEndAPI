@@ -121,6 +121,13 @@ namespace Core.Services.BusinesseRules
 
             return _userRepository.GetUserBalance(user.Id);
         }
+
+        public void AddBalance(long userId, decimal value)
+        {
+            User user = _userRepository.GetById(userId) ?? throw new ApiException(ApiMsg.EX009);
+
+            _userRepository.AddBalance(user.Id, value);
+        }
     }
 }
 

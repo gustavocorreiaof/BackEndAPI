@@ -12,5 +12,6 @@ namespace Core.Infrastructure.Repository.Interfaces
         long Update(User user);
         void Delete(User user);
         decimal GetUserBalance(long userId);
+        void AddBalance(long id, decimal value);
     }
 }

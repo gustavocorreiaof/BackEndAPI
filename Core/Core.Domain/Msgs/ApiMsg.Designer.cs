@@ -151,6 +151,24 @@ namespace Core.Domain.Msgs {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Invalid value provided for balance update..
+        /// </summary>
+        public static string EX011 {
+            get {
+                return ResourceManager.GetString("EX011", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Account not found..
+        /// </summary>
+        public static string EX012 {
+            get {
+                return ResourceManager.GetString("EX012", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a User successfully created..
         /// </summary>
         public static string INF001 {
