@@ -1,0 +1,46 @@
+﻿@page "/enter-userId"
+@using Core.Domain.Enums
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<div class="login-container">
+    <div class="login-box">
+
+        <h2>Enter the user ID to list their countries/cities</h2>
+
+        <div class="input-group">
+            <span class="icon oi oi-key"></span>
+            <input @bind="UserId" class="input-field" placeholder="User ID" />
+        </div>
+
+        <button class="login-button" @onclick="GoToListPage">List</button>
+    </div>
+</div>
+
+@code {
+    private string UserId { get; set; } = string.Empty;
+
+    private async Task GoToListPage()
+    {
+        await JS.InvokeVoidAsync("localStorage.setItem", "userId", UserId);
+        Navigation.NavigateTo("/favorites/List");
+    }
+}
+
+<style>
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f0f4f8;
+    }
+
+    .user-card {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 20px;
+        border: none;
+        background-color: #ffffff;
+    }
+</style>

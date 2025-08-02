@@ -1,0 +1,141 @@
+﻿@page "/weather-info"
+@using GlobalClimateAPI.Responses
+@using GlobalClimateClient.Responses.Models
+@using System.Text.Json
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<div class="weather-info-container">
+    <h2 class="text-white">Weather Information</h2>
+
+    @if (IsLoading)
+    {
+        <h3 class="text-white">Loading...</h3>
+    }
+    else if (HasError)
+    {
+        <h3 class="text-white">Error loading weather data.</h3>
+    }
+    else if (Weather == null)
+    {
+        <h3 class="text-white">No information found.</h3>
+    }
+    else
+    {
+        <table class="table-weather-info text-white">
+            <tr>
+                <th>Name</th>
+                <td>@Weather.Name</td>
+            </tr>
+            <tr>
+                <th>Weather</th>
+                <td>@Weather.WeatherMain</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>@Weather.Country</td>
+            </tr>
+        </table>
+    }
+
+    <button class="btn-voltar" @onclick="Voltar">
+        Favorites Page
+    </button>
+</div>
+
+@code {
+    private WeatherSummary Weather;
+    private bool IsLoading = true;
+    private bool HasError = false;
+
+    private void Voltar()
+    {
+        Navigation.NavigateTo("/favorites");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+            var cityName = await JS.InvokeAsync<string>("localStorage.getItem", "CityName");
+
+            Http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Http.GetAsync($"http://localhost:5233/Weather?city={cityName}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+
+                var content = JsonSerializer.Deserialize<GetWeatherResponse>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                Weather = new WeatherSummary
+                {
+                    Name = content.WeatherInfos.Name,
+                    WeatherMain = content.WeatherInfos.WeatherMain,
+                    Country = content.WeatherInfos.Country
+                };
+            }
+            else
+            {
+                HasError = true;
+            }
+        }
+        catch
+        {
+            HasError = true;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+}
+
+<style>
+    .weather-info-container {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: 0 auto;
+        max-width: 600px;
+        text-align: center;
+    }
+
+    .table-weather-info {
+        margin: 0 auto;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .table-weather-info th,
+        .table-weather-info td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+    .btn-voltar {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-weight: bold;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-voltar:hover {
+            background-color: #0056b3;
+        }
+
+</style>

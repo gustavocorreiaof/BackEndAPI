@@ -1,0 +1,357 @@
+﻿@page "/favorites/List"
+@using Core.Domain.Entities
+@using Core.Domain.Enums
+@using GlobalClimateAPI.Requests
+@using GlobalClimateAPI.Responses
+@using System.Net.Http.Headers
+@using System.Text.Json
+@using GlobalClimateAPI.Responses.Base
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="toast-notification show">@message</div>
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="toast-success show">@successMessage</div>
+}
+
+<div class="table-responsive favorite-table-container">
+
+    @if (btnActionTypeContextEnum == BtnActionTypeContext.City)
+    {
+        <h2>Favorite Cities.</h2>
+    }
+    else
+    {
+        <h2>Favorite Countries.</h2>
+    }
+
+    @if (IsLoading)
+    {
+        <h3 class="text-white">Loading...</h3>
+    }
+    else if (HasError)
+    {
+        <h3 class="text-white">Error loading favorite cities.</h3>
+    }
+    else if ((FavoriteCities == null || FavoriteCities.Count == 0) && (FavoriteCountries == null || FavoriteCountries.Count == 0))
+    {
+        if (btnActionTypeContextEnum == BtnActionTypeContext.City)
+        {
+            <h3 class="text-white">No favorite cities found.</h3>
+        }
+        else
+        {
+            <h3 class="text-white">No favorite countries found.</h3>
+        }
+    }
+    else
+    {
+        <table class="table table-hover table-dark table-bordered text-white">
+            <thead>
+                <tr>
+                    <th>City/Country Name</th>
+                    <th>Favorited Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (btnActionTypeContextEnum == BtnActionTypeContext.City)
+                {
+                    foreach (var city in FavoriteCities)
+                    {
+                        <tr>
+                            <td>@city.CityName</td>
+                            <td>@city.FavoritedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <button class="btn btn-delete" @onclick="() => DeleteCity(city.CityName)">
+                                    delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    foreach (var country in FavoriteCountries)
+                    {
+                        <tr>
+                            <td>@country.CountryName</td>
+                            <td>@country.FavoritedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+
+                            <td>
+                                <button class="btn btn-delete" @onclick="() => DeleteCountry(country.CountryName)">
+                                    delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    <button class="btn-voltar" @onclick="() => VoltarAoInicio()">
+        Favorites Page
+    </button>
+</div>
+
+
+@code {
+
+    private string? btnActionType;
+    private string? userId;
+    private List<FavoriteCity> FavoriteCities;
+    private List<FavoriteCountry> FavoriteCountries;
+    private bool IsLoading { get; set; } = true;
+    private bool HasError { get; set; } = false;
+    private string btnActionTypeContext;
+    private BtnActionTypeContext btnActionTypeContextEnum;
+    private string? message;
+    private string? successMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+
+        try
+        {
+            btnActionType = await JS.InvokeAsync<string>("localStorage.getItem", "btnActionTypeContext");
+            userId = await JS.InvokeAsync<string>("localStorage.getItem", "userId");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error reading from localStorage: " + ex.Message);
+        }
+
+        if (string.IsNullOrWhiteSpace(btnActionType))
+        {
+            Console.WriteLine("btnActionType is empty or null.");
+            return;
+        }
+
+        if (!Enum.TryParse<BtnActionTypeContext>(btnActionType, out btnActionTypeContextEnum))
+        {
+            Console.WriteLine("Failed to parse btnActionType to enum.");
+            return;
+        }
+
+        if (btnActionTypeContextEnum == BtnActionTypeContext.Country)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5233/api/Favorites/GetFavoriteCountriesByUserId?userId={userId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await Http.SendAsync(request);
+
+                if (response.IsSuccessStatusCode == true)
+                {
+                    var data = await response.Content.ReadFromJsonAsync<GetFavoriteCountriesResponse>();
+                    FavoriteCountries = data.Countries;
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+        else if (btnActionTypeContextEnum == BtnActionTypeContext.City)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5233/api/Favorites/GetFavoriteCitiesByUserId?userId={userId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await Http.SendAsync(request);
+
+                if (response.IsSuccessStatusCode == true)
+                {
+                    var data = await response.Content.ReadFromJsonAsync<GetFavoriteCitiesResponse>();
+                    FavoriteCities = data.Cities;
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+    }
+
+    private async Task DeleteCountry(string EntityName)
+    {
+        CountryFavoriteRequest request = new()
+        {
+            CountryName = EntityName,
+            UserId = userId
+        };
+
+        var json = JsonSerializer.Serialize(request);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        var httpRequest = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("http://localhost:5233/api/Favorites/DeleteFavoriteCountryByUserId"),
+            Content = content
+        };
+
+        var response = await Http.SendAsync(httpRequest);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var baseResponse = JsonSerializer.Deserialize<BaseResponse>(responseBody, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            successMessage = baseResponse.Message + "\nReturning to main menu.";
+
+            await InvokeAsync(StateHasChanged);
+
+            await Task.Delay(4000);
+
+            successMessage = null;
+
+            await InvokeAsync(StateHasChanged);
+
+            Navigation.NavigateTo("/favorites");
+        }
+        else
+        {
+            message = "Error deleting: " + (baseResponse?.Message ?? "Unknown error");
+
+            await InvokeAsync(StateHasChanged);
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                message = null;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+    }
+
+    private async Task DeleteCity(string entityName)
+    {
+        CityFavoriteRequest request = new()
+        {
+            CityName = entityName,
+            UserId = userId
+        };
+
+        var json = JsonSerializer.Serialize(request);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        var httpRequest = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("http://localhost:5233/api/Favorites/DeleteFavoriteCityByUserId"),
+            Content = content
+        };
+
+        var response = await Http.SendAsync(httpRequest);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var baseResponse = JsonSerializer.Deserialize<BaseResponse>(responseBody, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            successMessage = baseResponse.Message + "\nReturning to main menu.";
+
+            await InvokeAsync(StateHasChanged);
+
+            await Task.Delay(4000);
+
+            successMessage = null;
+
+            await InvokeAsync(StateHasChanged);
+
+            Navigation.NavigateTo("/favorites");
+        }
+        else
+        {
+            message = "Error deleting: " + (baseResponse?.Message ?? "Unknown error");
+
+            await InvokeAsync(StateHasChanged);
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                message = null;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+    }
+
+    private async Task VoltarAoInicio()
+    {
+        Navigation.NavigateTo("/favorites");
+    }
+}
+
+<style>
+    .favorite-table-container {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: 0 auto;
+        max-width: 800px;
+        text-align: center;
+    }
+
+        .favorite-table-container table {
+            margin: 0 auto;
+        }
+
+    .btn-delete {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+    .favorite-table-container table {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .favorite-table-container th,
+    .favorite-table-container td {
+        width: 33%;
+        text-align: center;
+    }
+
+    .title-container {
+        display: flex;
+        justify-content: center;
+    }
+</style>

@@ -1,0 +1,112 @@
+﻿body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #6a93cb, #a4bde2);
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+}
+
+.login-box {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+    color: white;
+}
+
+.icon-circle {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .icon-circle i {
+        font-size: 24px;
+        color: white;
+    }
+
+h2 {
+    font-weight: 300;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+    .input-group .icon {
+        margin-right: 10px;
+        color: white;
+    }
+
+.input-field {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    width: 100%;
+    font-size: 1em;
+}
+
+    .input-field::placeholder {
+        color: #e0e0e0;
+    }
+
+.validation-message {
+    color: #ffbdbd;
+    font-size: 0.8em;
+    text-align: left;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+    .options a {
+        color: white;
+        text-decoration: none;
+        font-size: 0.85em;
+    }
+
+.login-button {
+    width: 40%;
+    padding: 10px;
+    background-color: #0b3d91;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .login-button:hover {
+        background-color: #092c6c;
+    }

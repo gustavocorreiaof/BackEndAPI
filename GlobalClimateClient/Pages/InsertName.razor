@@ -1,0 +1,71 @@
+﻿@page "/InsertName"
+@using Core.Domain.Enums
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject HttpClient Http
+
+<div class="login-container">
+    <div class="login-box">
+
+        <h2>Enter the name</h2>
+
+        <div class="input-group">
+            <span class="icon oi oi-key"></span>
+            <input @bind="Name" class="input-field" placeholder="Name to search" />
+        </div>
+
+        <button class="login-button" @onclick="GoToInfosPage">Search Info</button>
+    </div>
+</div>
+
+@code {
+    private string Name { get; set; } = string.Empty;
+    private string? btnActionType;
+    private string btnActionTypeContext;
+    private BtnActionTypeContext btnActionTypeContextEnum;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        btnActionType = await JS.InvokeAsync<string>("localStorage.getItem", "btnActionTypeContext");
+
+        if (!Enum.TryParse<BtnActionTypeContext>(btnActionType, out btnActionTypeContextEnum))
+        {
+            Console.WriteLine("Failed to parse btnActionType to enum.");
+            return;
+        }
+    }
+
+    private async Task GoToInfosPage()
+    {
+        if (btnActionTypeContextEnum == BtnActionTypeContext.Country)
+        {
+            await JS.InvokeVoidAsync("localStorage.setItem", "CountryName", Name);
+            Navigation.NavigateTo("/country-info");
+        }
+        else if (btnActionTypeContextEnum == BtnActionTypeContext.City)
+        {
+            await JS.InvokeVoidAsync("localStorage.setItem", "CityName", Name);
+            Navigation.NavigateTo("/weather-info");
+        }
+    }
+}
+
+<style>
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f0f4f8;
+    }
+
+    .user-card {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 20px;
+        border: none;
+        background-color: #ffffff;
+    }
+</style>

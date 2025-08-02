@@ -5,7 +5,7 @@ namespace BackEndChellengeAPI.Requests
 {
     public class CreateTokenRequest
     {
-        [Required(ErrorMessageResourceType = typeof(RequestMsg), ErrorMessageResourceName = "ERR010")]
-        public required string UserName { get; set; }
+        public required string cpf { get; set; }
+        public required string senha { get; set; }
     }
 }

@@ -16,16 +16,35 @@ namespace BackEndChellengeAPI.Controllers
         public AuthController(IConfiguration config)
         {
             _config = config;
-        }
+        }/*
 
         [HttpPost]
         public IActionResult Login([FromBody] CreateTokenRequest request)
         {
-            var token = GenerateJwtToken(request.UserName);
+            var token = GenerateJwtToken(request.cpf, request.senha);
             return Ok(new { token });
+        }*/
+
+        [HttpGet("Login")]
+        public IActionResult Login([FromQuery] string cpf, [FromQuery] string senha)
+        {
+            string cpfValido = "48072729004";
+            string senhaValida = "123456";
+
+            try
+            {
+                if(cpf != cpfValido || senha != senhaValida)
+                    return Unauthorized("Login invalido.");
+                
+                return Ok("Login bem sucedido!");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string username, string senha)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"];
@@ -50,5 +69,7 @@ namespace BackEndChellengeAPI.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
     }
 }

@@ -1,0 +1,142 @@
+﻿@page "/country-info"
+@using GlobalClimateAPI.Responses
+@using GlobalClimateClient.Responses.Models
+@using System.Text.Json
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<div class="country-info-container">
+    <h2 class="text-white">Country Information</h2>
+
+    @if (IsLoading)
+    {
+        <h3 class="text-white">Loading...</h3>
+    }
+    else if (HasError)
+    {
+        <h3 class="text-white">Error loading country data.</h3>
+    }
+    else if (Country == null)
+    {
+        <h3 class="text-white">No information found.</h3>
+    }
+
+    else
+    {
+        <table class="table-country-info text-white">
+            <tr>
+                <th>Name</th>
+                <td>@Country.Name</td>
+            </tr>
+            <tr>
+                <th>Capital</th>
+                <td>@Country.Capital</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>@Country.Region</td>
+            </tr>
+            <tr>
+                <th>Language</th>
+                <td>@Country.Language</td>
+            </tr>
+            <tr>
+                <th>Population</th>
+                <td>@Country.Population.ToString("N0")</td>
+            </tr>
+        </table>
+    }
+    <button class="btn-voltar" @onclick="() => VoltarAoInicio()">
+        Favorites Page
+    </button>
+</div>
+
+@code {
+    private CountryInfo Country;
+    private bool IsLoading = true;
+    private bool HasError = false;
+
+    private async Task VoltarAoInicio()
+    {
+        Navigation.NavigateTo("/favorites");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+            var countryName = await JS.InvokeAsync<string>("localStorage.getItem", "CountryName");
+
+            Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Http.GetAsync($"http://localhost:5233/Country?name={countryName}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var content = JsonSerializer.Deserialize<GetCountryResponse>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                Country = content.CountryInfos;
+            }
+            else
+            {
+                HasError = true;
+            }
+        }
+        catch
+        {
+            HasError = true;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+}
+
+
+<style>
+    .country-info-container {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: 0 auto;
+        max-width: 600px;
+        text-align: center;
+    }
+
+    .table-country-info {
+        margin: 0 auto;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .table-country-info th,
+        .table-country-info td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+    .btn-voltar {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-weight: bold;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-voltar:hover {
+            background-color: #0056b3;
+        }
+</style>

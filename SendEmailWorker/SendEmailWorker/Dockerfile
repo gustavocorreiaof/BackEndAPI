@@ -1,25 +1,23 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app/SendEmailWorker
 
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
+# Copia o código para dentro do container
+COPY . /app
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0-nanoserver-1809 AS base
-WORKDIR /app
+# Copia o script wait-for-it.sh
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["SendEmailWorker/SendEmailWorker.csproj", "SendEmailWorker/"]
-RUN dotnet restore "./SendEmailWorker/./SendEmailWorker.csproj"
-COPY . .
-WORKDIR "/src/SendEmailWorker"
-RUN dotnet build "./SendEmailWorker.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+# Realiza a restauração e publicação
+RUN dotnet restore
+RUN dotnet publish -c Release -o /app/publish
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./SendEmailWorker.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+# Configuração do runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app/SendEmailWorker
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SendEmailWorker.dll"]
+# Copia o código compilado para o ambiente de runtime
+COPY --from=build /app/publish .
+
+# Garantir que o RabbitMQ esteja disponível antes de iniciar o Worker
+ENTRYPOINT ["/wait-for-it.sh", "rabbitmq:5672", "--", "dotnet", "SendEmailWorker.dll"]

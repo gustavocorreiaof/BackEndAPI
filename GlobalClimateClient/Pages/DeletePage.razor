@@ -1,0 +1,209 @@
+﻿@page "/deletePage"
+@using Core.Domain.Enums
+@using GlobalClimateAPI.Requests
+@using GlobalClimateAPI.Responses.Base
+@using System.Text.Json
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject HttpClient Http
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="toast-notification show">@message</div>
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="toast-success show">@successMessage</div>
+}
+
+<div class="login-container">
+    <div class="login-box">
+
+        <h2>Delete Country/City</h2>
+
+        <div class="input-group">
+            <span class="icon oi oi-key"></span>
+            <input @bind="UserId" class="input-field" placeholder="User ID" />
+        </div>
+
+        <div class="input-group">
+            <span class="icon oi oi-key"></span>
+            <input @bind="EntityName" class="input-field" placeholder="Country/City Name" />
+        </div>
+        <div class="button-group">
+            <button class="login-button" @onclick="Submit">Delete</button>
+            <button class="btn-voltar" @onclick="() => VoltarAoInicio()">
+                Favorites Page
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string UserId { get; set; } = string.Empty;
+    private string EntityName { get; set; } = string.Empty;
+    private string? message;
+    private string? successMessage;
+    private BtnActionTypeContext btnActionTypeContextEnum;
+    private string? btnActionTypeContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        try
+        {
+            btnActionTypeContext = await JS.InvokeAsync<string>("localStorage.getItem", "btnActionTypeContext");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error reading from localStorage: " + ex.Message);
+        }
+
+        Enum.TryParse(btnActionTypeContext, out btnActionTypeContextEnum);
+    }
+
+    private async Task Submit()
+    {
+        if (btnActionTypeContextEnum == BtnActionTypeContext.Country)
+            DeleteCountry();
+        else
+            DeleteCity();
+    }
+
+    private async Task DeleteCountry()
+    {
+        CountryFavoriteRequest request = new()
+        {
+            CountryName = EntityName,
+            UserId = UserId
+        };
+
+        var json = JsonSerializer.Serialize(request);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        var httpRequest = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("http://localhost:5233/api/Favorites/DeleteFavoriteCountryByUserId"),
+            Content = content
+        };
+
+        var response = await Http.SendAsync(httpRequest);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var baseResponse = JsonSerializer.Deserialize<BaseResponse>(responseBody, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            successMessage = baseResponse.Message + "\nReturning to main menu.";
+
+            await InvokeAsync(StateHasChanged);
+
+            await Task.Delay(4000);
+
+            successMessage = null;
+
+            await InvokeAsync(StateHasChanged);
+
+            Navigation.NavigateTo("/favorites");
+        }
+        else
+        {
+            message = "Error deleting: " + (baseResponse?.Message ?? "Unknown error");
+
+            await InvokeAsync(StateHasChanged);
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                message = null;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+    }
+
+    private async Task DeleteCity()
+    {
+        CityFavoriteRequest request = new()
+        {
+            CityName = EntityName,
+            UserId = UserId
+        };
+
+        var json = JsonSerializer.Serialize(request);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        var httpRequest = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("http://localhost:5233/api/Favorites/DeleteFavoriteCityByUserId"),
+            Content = content
+        };
+
+        var response = await Http.SendAsync(httpRequest);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var baseResponse = JsonSerializer.Deserialize<BaseResponse>(responseBody, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            successMessage = baseResponse.Message + "\nReturning to main menu.";
+
+            await InvokeAsync(StateHasChanged);
+
+            await Task.Delay(4000);
+
+            successMessage = null;
+
+            await InvokeAsync(StateHasChanged);
+
+            Navigation.NavigateTo("/favorites");
+        }
+        else
+        {
+            message = "Error deleting: " + (baseResponse?.Message ?? "Unknown error");
+
+            await InvokeAsync(StateHasChanged);
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                message = null;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+    }
+
+    private async Task VoltarAoInicio()
+    {
+        Navigation.NavigateTo("/favorites");
+    }
+}
+
+<style>
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f0f4f8;
+    }
+
+    .user-card {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 20px;
+        border: none;
+        background-color: #ffffff;
+    }
+</style>
